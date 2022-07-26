@@ -1,0 +1,41 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Server",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/server/server.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Server - MongoRemote",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/server/server.js",
+            "env": {
+                "MONGODB_URI": "mongodb+srv://budget:N0th1ng@bootcamp-budgettrackerd.e5ggz.mongodb.net/?retryWrites=true&w=majority"
+            }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Client",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/client/src/index.js",
+            "env": {
+                "NODE_OPTIONS": "--openssl-legacy-provider"
+            }
+        }
+    ]
+}
