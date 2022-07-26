@@ -6,9 +6,9 @@ import LoginForm from './LoginForm';
 
 import Auth from '../utils/auth';
 
-const AppNavbar = () => {
+const navBar = ({ currentPage, handlePageChange }) => {
   // set modal display state
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = React.useState(false);
 
   return (
     <>
@@ -20,14 +20,20 @@ const AppNavbar = () => {
           <Navbar.Toggle aria-controls='navbar' />
           <Navbar.Collapse id='navbar'>
             <Nav className='ml-auto'>
-              <Nav.Link as={Link} to='/'>
-                Search For Books
-              </Nav.Link>
               {/* if user is logged in show saved books and logout */}
               {Auth.loggedIn() ? (
                 <>
-                  <Nav.Link as={Link} to='/saved'>
-                    See Your Books
+                  <Nav.Link onClick={() => handlePageChange('SearchBooks')} className={currentPage === 'About' ? 'nav-link active' : 'nav-link'}>
+                    Search Books
+                  </Nav.Link>
+                  <Nav.Link onClick={() => handlePageChange('SavedBooks')} className={currentPage === 'About' ? 'nav-link active' : 'nav-link'}>
+                    Saved Books Books
+                  </Nav.Link>
+                  <Nav.Link onClick={() => handlePageChange('ReadBooks')} className={currentPage === 'About' ? 'nav-link active' : 'nav-link'}>
+                    Read Books
+                  </Nav.Link>
+                  <Nav.Link onClick={() => handlePageChange('Profile')} className={currentPage === 'About' ? 'nav-link active' : 'nav-link'}>
+                    Profile
                   </Nav.Link>
                   <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
                 </>
@@ -74,4 +80,4 @@ const AppNavbar = () => {
   );
 };
 
-export default AppNavbar;
+export default Navbar;
