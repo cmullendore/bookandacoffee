@@ -8,7 +8,7 @@ import { REMOVE_BOOK } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
 import { useQuery, useMutation } from '@apollo/react-hooks'; */
 
-const SavedBooks = () => {
+const Profile = () => {
   /* 
   const [userData, setUserData] = useState();
 
@@ -60,7 +60,7 @@ const SavedBooks = () => {
     <>
       <Jumbotron fluid className='text-light bg-dark'>
         <Container>
-          <h1>Viewing Saved Books!</h1>
+          <h1>Viewing Profile!</h1>
         </Container>
       </Jumbotron>
     </>
@@ -96,4 +96,4 @@ const SavedBooks = () => {
   );
 }; */
 
-export default SavedBooks;
+export default Profile;

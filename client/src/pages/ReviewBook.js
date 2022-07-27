@@ -152,15 +152,15 @@ const SearchBooks = () => {
 
 */
 
-const SearchBooks = () => { 
+const ReviewBook = () => { 
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
         <Container>
-          <h1>Viewing Search Books!</h1>
+          <h1>Reviewing Book!</h1>
         </Container>
       </Jumbotron>
     </>
   );
 };
-export default SearchBooks;
+export default ReviewBook;
