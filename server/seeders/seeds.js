@@ -19,6 +19,7 @@ db.once('open', async () => {
 
     console.log("inserting");
     const createdUsers = await User.collection.insertMany(userData);
+    console.log(createdUsers);
     console.log("inserted");
 }
 )

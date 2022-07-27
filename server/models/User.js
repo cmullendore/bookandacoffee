@@ -43,19 +43,16 @@ const userSchema = new Schema(
     ],
     biography: {
       type: String,
-      required: false,
-      unique: true
+      required: false
     },
     favoriteSubjects: {
       type: [String],
-      required: false,
-      unique: true
+      required: false
     },
     userProfilePicURL: {
       type: String,
       default: "https://tinyurl.com/4dzr8d73",
-      required: false,
-      unique: true
+      required: false
     }
 
   },
