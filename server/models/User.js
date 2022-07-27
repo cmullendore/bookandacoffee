@@ -3,14 +3,10 @@ const bcrypt = require('bcrypt');
 
 // import schema from Book.js
 const Book = require('./Book');
+const BookReview = require('./BookReview');
 
 const userSchema = new Schema(
   {
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     email: {
       type: String,
       required: true,
@@ -22,7 +18,24 @@ const userSchema = new Schema(
       required: true,
     },
     // set savedBooks to be an array of data that adheres to the bookSchema
-    savedBooks: [Book]
+    savedBooks:  [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Book'
+      }
+    ],
+    readBooks:  [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Book'
+      }
+    ],
+    bookReviews:  [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'BookReview'
+      }
+    ]
   },
   // set this to use virtual below
   {

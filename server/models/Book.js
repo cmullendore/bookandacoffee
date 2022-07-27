@@ -1,32 +1,40 @@
-const { Schema } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const Book = {
-  authors: [
-    {
+const bookSchema = new Schema(
+  {
+    authors: [
+      {
+        type: String,
+      },
+    ],
+    description: {
+      type: String,
+      required: true,
+    },
+    // saved book id from GoogleBooks
+    bookId: {
+      type: String,
+      required: true,
+    },
+    image: {
       type: String,
     },
-  ],
-  description: {
-    type: String,
-    required: true,
+    link: {
+      type: String,
+    },
+    title: {
+      type: String,
+      required: true,
+    }
   },
-  // saved book id from GoogleBooks
-  bookId: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-  },
-  link: {
-    type: String,
-  },
-  title: {
-    type: String,
-    required: true,
+  // set this to use virtual below
+  {
+    toJSON: {
+      virtuals: true,
+    },
   }
-}
+);
 
-// This is a subdocument schema, it won't become its own model but we'll use it as the schema for the User's `savedBooks` array in User.js
+const Book = model('Book', bookSchema);
 
 module.exports = Book;
