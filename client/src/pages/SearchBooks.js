@@ -160,7 +160,7 @@ const SearchBooks = () => {
                   <a href={book.link} target='_blank' rel='noopener noreferrer'>Review on Google Books</a>
                   <p className='small'>Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
-                  {true && (
+                  {Auth.loggedIn() && (
                     <div>
                       <Button
                         disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
