@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import auth from './utils/auth';
 
 import {
   ApolloClient,
@@ -9,9 +9,10 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-import SearchBooks from './pages/SearchBooks';
-import SavedBooks from './pages/SavedBooks';
-import Navbar from './components/Navbar';
+import { Home, Profile, ReadBooks, SearchBooks, SavedBooks, ReviewBook } from './pages'
+
+import Navtabs from './components/Navtabs';
+import { Router } from 'react-router-dom';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -32,20 +33,52 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-
 function App() {
+
+  const [currentPage, setCurrentPage] = useState('Home');
+
+  // This method is checking to see what the value of `currentPage` is. Depending on the value of currentPage, we return the corresponding component to render.
+  const renderPage = () => {
+
+    // We only ever want to navigate to these if the user is logged in
+    //if (auth.loggedIn()) {
+      switch (currentPage) {
+        case 'SearchBooks':
+          return <SearchBooks />
+          break;
+        case 'SavedBooks':
+          return <SavedBooks />
+          break;
+        case 'ReadBooks':
+          return <ReadBooks />
+          break;
+        case 'Profile':
+          return <Profile />
+          break;
+        case 'ReviewBook':
+          // This won't show up in the tabs but will be called
+          // when the "Review this book" (or whatever) button
+          // is pressed.
+          return <ReviewBook />
+          break;
+      }
+    //}
+
+    return <Home />;
+  };
+
+  const handlePageChange = (page) => setCurrentPage(page);
+
+
+
   return (
     <ApolloProvider client={client}>
-      <Router>
-        <>
-          <Navbar />
-          <Switch>
-            <Route exact path='/' component={SearchBooks} />
-            <Route exact path='/saved' component={SavedBooks} />
-            <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
-          </Switch>
-        </>
-      </Router>
+      <div>
+        {/* We are passing the currentPage from state and the function to update it */}
+        <Navtabs currentPage={currentPage} handlePageChange={handlePageChange} />
+        {/* Here we are calling the renderPage method which will return a component  */}
+        {renderPage()}
+      </div>
     </ApolloProvider>
   );
 }
