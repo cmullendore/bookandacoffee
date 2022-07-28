@@ -5,11 +5,13 @@ import Auth from '../utils/auth';
 import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 import { useMutation } from '@apollo/client';
-import { SAVE_BOOK } from '../utils/mutations';
+import { SAVE_BOOK, READ_BOOK } from '../utils/mutations';
 
 const SearchBooks = () => {
   // create function for saving a book to user's book list in database
   const [saveBook, { error }] = useMutation(SAVE_BOOK);
+
+  const [readBook, { error : err }] = useMutation(READ_BOOK);
 
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
@@ -46,8 +48,6 @@ const SearchBooks = () => {
 
       const { items } = await response.json();
 
-      console.log(items);
-
       const bookData = items.map((book) => ({
         bookId: book.id,
         authors: book.volumeInfo.authors || ['No author to display'],
@@ -78,25 +78,41 @@ const SearchBooks = () => {
       return false;
     }
 
-    try {
-      await saveBook({
-        variables: { input: { ...bookToSave } }
-      });
+    switch (type.name) {
+      case 'save_books':
+        try {
+          await saveBook({
+            variables: { book: { ...bookToSave } }
+          });
 
-      if (error) {
-        throw new Error('Something went wrong!');
-      }
+          if (error) {
+            throw new Error('Something went wrong!');
+          }
 
-      switch (type.name) {
-        case 'save_books': 
           setSavedBookIds([...savedBookIds, bookToSave.bookId]);
-          break;
-        case 'read_books':
+
+        } catch (err) {
+          console.error(err);
+        }
+        break;
+      case 'read_books':
+        try {
+          await readBook({
+            variables: { book: { ...bookToSave } }
+          });
+
+          if (err) {
+            throw new Error('Something went wrong!');
+          }
+
           setReadBookIds([...readBookIds, bookToSave.bookId]);
-          break;
-      }
-    } catch (err) {
-      console.error(err);
+
+        } catch (err) {
+          console.error(err);
+        }
+        break;
+      default:
+        break;
     }
   };
 
