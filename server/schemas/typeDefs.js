@@ -29,6 +29,15 @@ input BookInput {
     link: String
   }
 
+  type BookReview {
+    _id: [ID]
+    user: User
+    book: Book
+    title: String
+    content: String
+    createdAt: String
+  }
+
   type Auth {
     token: ID
     user: User
@@ -38,6 +47,7 @@ input BookInput {
     me: User 
     user: User
     users: [User]
+    bookReviews: [BookReview]
   }
 
   type Mutation {
@@ -45,6 +55,7 @@ input BookInput {
     addUser(username: String!, email: String!, password: String!): Auth
     saveBook(book: BookInput!): User
     removeBook(bookId: String!): User
+    addReview(bookId: String!, userId: String, content: String): User
   }
 
 `;
