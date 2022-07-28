@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { Book, User } = require('../models');
+const { Book, User, BookReview } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -11,6 +11,17 @@ const resolvers = {
             }
 
             throw new AuthenticationError('Not logged in');
+        },
+        bookReviews: async (parent, {skip = 0, limit = 10}) => {
+            const reviews = await BookReview.find({})
+                .sort({createdOn:-1})
+                .skip(skip)
+                .limit(limit);
+            return reviews;
+        },
+        users: async (parent, args) => {
+            const reviews = await User.find();
+            return reviews;
         }
     },
 
@@ -77,6 +88,20 @@ const resolvers = {
 
             throw new AuthenticationError('Incorrect credentials');
         }
+        /* - The final version of this SHOULD use the context
+        addReview: async (parent, { bookId, userId, content }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: { bookId } } },
+                    { new: true }
+                );
+
+                return updatedUser;
+            }
+        
+        }
+        */
     }
 };
 
