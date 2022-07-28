@@ -99,30 +99,19 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
                 <div className="modal-title h4" id="signup-modal">
                   <div className="nav nav-pills" role="tablist">
                     <div className="nav-item"><a href="#" role="tab" data-rb-event-key="login" aria-selected="true"
-                      className="nav-link active">Login</a></div>
+                      className="nav-link active" onClick={() => setShowLogin(true)}>Login</a></div>
                     <div className="nav-item"><a href="#" role="tab" data-rb-event-key="signup" tabIndex="-1"
-                      aria-selected="false" className="nav-link">Sign Up</a></div>
+                      aria-selected="false" className="nav-link" onClick={() => setShowSignup(true)}>Sign Up</a></div>
                   </div>
                 </div><button type="button" className="close"><span aria-hidden="true">×</span><span
                   className="sr-only">Close</span></button>
               </div>
               <div className="modal-body">
                 <div className="tab-content">
-                  <div role="tabpanel" aria-hidden="false" className="fade tab-pane active show">
-                    <form noValidate="" className="">
-                      <div className="form-group"><label className="form-label" htmlFor="email">Email</label><input
-                        placeholder="Your email" name="email" required="" type="text" className="form-control"
-                        defaultValue="" />
-                        <div className="invalid-feedback">Email is required!</div>
-                      </div>
-                      <div className="form-group"><label className="form-label" htmlFor="password">Password</label><input
-                        placeholder="Your password" name="password" required="" type="password"
-                        className="form-control" defaultValue="" />
-                        <div className="invalid-feedback">Password is required!</div>
-                      </div><button disabled="" type="submit" className="btn btn-success">Submit</button>
-                    </form>
+                  <div id="login" role="tabpanel" aria-hidden="false" className="fade tab-pane active show">
+                    <LoginForm />
                   </div>
-                  <div role="tabpanel" aria-hidden="true" className="fade tab-pane">
+                  <div id="signup" role="tabpanel" aria-hidden="true" className="fade tab-pane">
                     <form noValidate="" className="">
                       <div className="form-group"><label className="form-label" htmlFor="username">Username</label><input
                         placeholder="Your username" name="username" required="" type="text"
