@@ -97,3 +97,23 @@ mutation saveBook($bookId: String!) {
     }
   }
 `
+
+export const ADD_REVIEW = gql`
+mutation saveBook($bookId: String!) {
+    removeBook(
+        bookId: $bookId
+    ) {
+        _id
+        username
+        email
+        savedBooks {
+          bookId
+          title
+          authors
+          description
+          image
+          link
+          }
+    }
+  }
+`
