@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { Book, User } = require('../models');
+const { Book, User, BookReview } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -11,6 +11,19 @@ const resolvers = {
             }
 
             throw new AuthenticationError('Not logged in');
+        },
+        bookReviews: async (parent, args) => {
+            const reviews = await BookReview.find({}).populate('user').populate('book').limit(5);
+            
+            return reviews;
+        },
+        users: async (parent, args) => {
+            const users = await User.find({})
+                .populate({path: 'bookReviews', populate: {path: 'book'}})
+                .populate({path: 'readBooks', populate: {path: 'book'}})
+                .populate({path: 'savedBooks', populate: {path: 'book'}});
+
+            return users;
         }
     },
 

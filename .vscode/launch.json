@@ -16,6 +16,17 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Seed",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "/usr/bin/npm",
+            "args": ["run", "seed"],
+            "cwd": "${workspaceFolder}/server"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Server - MongoRemote",
             "skipFiles": [
                 "<node_internals>/**"

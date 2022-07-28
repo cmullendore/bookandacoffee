@@ -18,15 +18,26 @@ input BookInput {
     email: String
     bookCount: Int
     savedBooks: [Book]
+    readBooks: [Book]
+    bookReviews: [BookReview]
   }
 
   type Book {
+    _id: ID
     bookId: String
     authors: [String]
     description: String
     title: String
     image: String
     link: String
+  }
+
+  type BookReview {
+    _id: ID
+    user: User
+    book: Book
+    content: String
+    createdOn: String
   }
 
   type Auth {
@@ -38,6 +49,7 @@ input BookInput {
     me: User 
     user: User
     users: [User]
+    bookReviews: [BookReview]
   }
 
   type Mutation {

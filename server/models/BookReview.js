@@ -6,18 +6,16 @@ const User = require('./User');
 
 const bookReviewSchema = new Schema(
   {
-    user:  [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-      }
-    ],
-    book:  [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Book'
-      }
-    ],
+    user:
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    book:
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Book'
+    },
     content: {
       type: String,
       required: true,
