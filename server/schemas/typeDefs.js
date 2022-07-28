@@ -33,6 +33,7 @@ input BookInput {
     _id: [ID]
     user: User
     book: Book
+    title: String
     content: String
     createdAt: String
   }
