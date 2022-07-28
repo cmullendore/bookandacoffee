@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import SignUpForm from './SignupForm';
 import LoginForm from './LoginForm';
-
+import ReviewForm from './ReviewForm';
 import Auth from '../utils/auth';
 
 const Navtabs = ({ currentPage, handlePageChange }) => {
@@ -34,43 +34,43 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
                   </a>
                 </Nav>
                 <Nav>
-                <a
+                  <a
                     href="#savedbooks"
                     onClick={() => handlePageChange('SavedBooks')}
                     // Check to see if the currentPage is `About`, and if so we use the active link class from bootstrap. Otherwise, we set it to a normal nav-link
                     className={currentPage === 'SavedBooks' ? 'nav-link active' : 'nav-link'}
                   >
-                  Saved Books
+                    Saved Books
                   </a>
                 </Nav>
                 <Nav>
-                <a
+                  <a
                     href="#readbooks"
                     onClick={() => handlePageChange('ReadBooks')}
                     // Check to see if the currentPage is `About`, and if so we use the active link class from bootstrap. Otherwise, we set it to a normal nav-link
                     className={currentPage === 'ReadBooks' ? 'nav-link active' : 'nav-link'}
                   >
-                  Read Books
+                    Read Books
                   </a>
                 </Nav>
                 <Nav>
-                <a
+                  <a
                     href="#profile"
                     onClick={() => handlePageChange('Profile')}
                     // Check to see if the currentPage is `About`, and if so we use the active link class from bootstrap. Otherwise, we set it to a normal nav-link
                     className={currentPage === 'Profile' ? 'nav-link active' : 'nav-link'}
                   >
-                  Profile
+                    Profile
                   </a>
                 </Nav>
                 <Nav>
-                <a
+                  <a
                     href="#"
                     onClick={Auth.logout}
                     // Check to see if the currentPage is `About`, and if so we use the active link class from bootstrap. Otherwise, we set it to a normal nav-link
                     className={'nav-link'}
                   >
-                  Logout
+                    Logout
                   </a>
                 </Nav>
               </>

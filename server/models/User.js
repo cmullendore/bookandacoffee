@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const Book = require('./Book');
 
 const userSchema = new Schema(
-  {
+  { 
     username: {
       type: String,
       required: true,
@@ -22,7 +22,39 @@ const userSchema = new Schema(
       required: true,
     },
     // set savedBooks to be an array of data that adheres to the bookSchema
-    savedBooks: [Book]
+    savedBooks: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Book'
+      }
+    ],
+    // set readBooks to be an array of data that keeps track of already read books
+    readBooks: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Book'
+      }
+    ],
+    bookReviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'BookReview'
+      }
+    ],
+    biography: {
+      type: String,
+      required: false
+    },
+    favoriteSubjects: {
+      type: [String],
+      required: false
+    },
+    userProfilePicURL: {
+      type: String,
+      default: "https://tinyurl.com/4dzr8d73",
+      required: false
+    }
+
   },
   // set this to use virtual below
   {
