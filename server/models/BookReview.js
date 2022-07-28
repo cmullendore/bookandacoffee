@@ -5,24 +5,30 @@ const Book = require('./Book');
 const User = require('./User');
 
 const bookReviewSchema = new Schema(
-  {
-    user:
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
+  { 
+    // set readBooks to be an array of data that keeps track of already read books
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     book:
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Book'
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Book'
+      }
+    ,
+    title: {
+      type: String,
+      required: true
     },
     content: {
       type: String,
-      required: true,
+      required: true
     },
-    createdDate: {
+    createdOn: {
       type: Date,
-      default: Date.now()
+      required: true,
+      default: Date.now
     }
   },
   // set this to use virtual below

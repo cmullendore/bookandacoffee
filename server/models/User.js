@@ -35,7 +35,21 @@ const userSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: 'BookReview'
       }
-    ]
+    ],
+    biography: {
+      type: String,
+      required: false
+    },
+    favoriteSubjects: {
+      type: [String],
+      required: false
+    },
+    userProfilePicURL: {
+      type: String,
+      default: "https://tinyurl.com/4dzr8d73",
+      required: false
+    }
+
   },
   // set this to use virtual below
   {

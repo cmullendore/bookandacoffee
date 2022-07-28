@@ -33,11 +33,12 @@ input BookInput {
   }
 
   type BookReview {
-    _id: ID
+    _id: [ID]
     user: User
     book: Book
+    title: String
     content: String
-    createdOn: String
+    createdAt: String
   }
 
   type Auth {
@@ -57,6 +58,7 @@ input BookInput {
     addUser(username: String!, email: String!, password: String!): Auth
     saveBook(book: BookInput!): User
     removeBook(bookId: String!): User
+    addReview(bookId: String!, userId: String, content: String): User
   }
 
 `;

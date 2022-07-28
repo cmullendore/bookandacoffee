@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
+import ReviewForm from '../components/ReviewForm';
 
 /* //import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
@@ -8,7 +9,7 @@ import { REMOVE_BOOK } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
 import { useQuery, useMutation } from '@apollo/react-hooks'; */
 
-const SavedBooks = () => {
+const ReadBooks = () => {
   /* 
   const [userData, setUserData] = useState();
 
@@ -56,13 +57,25 @@ const SavedBooks = () => {
   {
     return <h2>CONFIGURING...</h2>;
   } */
+
+// THIS BOOK IS USED FOR TESTING ONLY
+const book = {
+  title: "test book title",
+  description: 'test book description',
+  image: "./user_placeholder.png"
+}
+
+const [showReview, setShowReview] = React.useState(false);
+
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
         <Container>
-          <h1>Viewing Saved Books!</h1>
+          <h1>Viewing Read Books!</h1>
         </Container>
       </Jumbotron>
+      <button type="button" className="close" onClick={() => setShowReview(true)}>Show Review Form</button>
+      <ReviewForm book={book} showReview={showReview} setShowReview={setShowReview} />
     </>
   );
 };
@@ -96,4 +109,4 @@ const SavedBooks = () => {
   );
 }; */
 
-export default SavedBooks;
+export default ReadBooks;

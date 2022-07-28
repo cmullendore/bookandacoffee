@@ -76,6 +76,20 @@ const resolvers = {
 
             throw new AuthenticationError('Incorrect credentials');
         }
+        /* - The final version of this SHOULD use the context
+        addReview: async (parent, { bookId, userId, content }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: { bookId } } },
+                    { new: true }
+                );
+
+                return updatedUser;
+            }
+        
+        }
+        */
     }
 };
 
