@@ -1,31 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
-/* //import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
-
-import { REMOVE_BOOK } from '../utils/mutations';
+import { removeBookId } from '../utils/localStorage';
+import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
-import { useQuery, useMutation } from '@apollo/react-hooks'; */
+import { REMOVE_BOOK } from '../utils/mutations';
 
 const SavedBooks = () => {
-  /* 
-  const [userData, setUserData] = useState();
 
-  const [removeBook, { removeBookError }] = useMutation(REMOVE_BOOK);
+  //const { loading, data } = useQuery(QUERY_ME);
+  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
-  const userProfile = Auth.getProfile();
+  //const userData = data?.me || {};
 
-  let { loading, data } = useQuery(QUERY_ME, {
-    variables: { username: userProfile.data.username },
-  });
-
-  useEffect(() => {
-      if (data) {
-        setUserData(data.me);
-      }
-  }, [data]);
-
+  const userData = {}
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -34,38 +23,64 @@ const SavedBooks = () => {
     if (!token) {
       return false;
     }
-    //loading = true;
-    try {
-      data = await removeBook({
-        variables: {...{bookId: bookId} }
-      })
 
-      //setUserData(data.me);
-      // upon success, remove book's id from localStorage
-      removeBookId(bookId);
-    } catch (err) {
-      console.error(err);
-    }
+    // try {
+    //   await removeBook({
+    //     variables: { bookId }
+    //   });
+
+    //   if (error) {
+    //     throw new Error('Something went wrong!');
+    //   }
+
+    //   // upon success, remove book's id from localStorage
+    //   removeBookId(bookId);
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
   // if data isn't here yet, say so
-  if (loading) {
-    return <h2>LOADING...</h2>;
-  }
-  if (data && !userData)
-  {
-    return <h2>CONFIGURING...</h2>;
-  } */
+  // if (loading) {
+  //   return <h2>LOADING...</h2>;
+  // }
+
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
-        <Container>
-          <h1>Viewing Saved Books!</h1>
-        </Container>
+        <div className='container'>
+          <h1>Viewing saved books!</h1>
+        </div>
       </Jumbotron>
+      <Container>
+        <h2>
+          {userData.savedBooks.length
+            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
+            : 'You have no saved books!'}
+        </h2>
+        <CardColumns>
+          {userData.savedBooks.map((book) => {
+            return (
+              <Card key={book.bookId} border='dark'>
+                {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
+                <Card.Body>
+                  <Card.Title>{book.title}</Card.Title>
+                  <a href={book.link} target='_blank' rel='noreferrer'>Review on Google Books</a>
+                  <p className='small'>Authors: {book.authors}</p>
+                  <Card.Text>{book.description}</Card.Text>
+                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
+                    Delete this Book!
+                  </Button>
+                </Card.Body>
+              </Card>
+            );
+          })}
+        </CardColumns>
+      </Container>
     </>
   );
 };
+
 /* 
     
       <Container>
