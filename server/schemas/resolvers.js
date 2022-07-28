@@ -41,7 +41,21 @@ const resolvers = {
 
                 const updatedUser = await User.findByIdAndUpdate(
                     { _id: context.user._id },
-                    { $push: { savedBooks: book } },
+                    { $addToSet: { savedBooks: book } },
+                    { new: true }
+                );
+
+                return updatedUser;
+            }
+
+            throw new AuthenticationError('Incorrect credentials');
+        },
+        readBook: async (parent, { book }, context) => {
+            if (context.user) {
+
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $addToSet: { readBooks: book } },
                     { new: true }
                 );
 

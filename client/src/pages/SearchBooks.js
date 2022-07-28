@@ -71,44 +71,33 @@ const SearchBooks = () => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
-    switch (type.name) {
-      case 'save_books':
-        setSavedBookIds([...savedBookIds, bookToSave.bookId]);
-        break;
-      case 'read_books':
-        setReadBookIds([...readBookIds, bookToSave.bookId]);
-        break;
-      default:
-        break;
+    // get token
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+    if (!token) {
+      return false;
     }
 
-    // get token
-    // const token = Auth.loggedIn() ? Auth.getToken() : null;
+    try {
+      await saveBook({
+        variables: { input: { ...bookToSave } }
+      });
 
-    // if (!token) {
-    //   return false;
-    // }
+      if (error) {
+        throw new Error('Something went wrong!');
+      }
 
-    // try {
-    //   await saveBook({
-    //     variables: { input: { ...bookToSave } }
-    //   });
-
-    //   if (error) {
-    //     throw new Error('Something went wrong!');
-    //   }
-
-    //   switch (type.name) {
-    //     case 'save_books': 
-    //       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
-    //       break;
-    //     case 'read_books':
-    //       setReadBookIds([...readBookIds, bookToSave.bookId]);
-    //       break;
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    // }
+      switch (type.name) {
+        case 'save_books': 
+          setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+          break;
+        case 'read_books':
+          setReadBookIds([...readBookIds, bookToSave.bookId]);
+          break;
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
