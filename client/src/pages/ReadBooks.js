@@ -1,32 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
-import ReviewForm from '../components/ReviewForm';
 
-/* //import { getMe, deleteBook } from '../utils/API';
+// import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
-
+import { removeBookId, getSavedBookIds, saveBookIds } from '../utils/localStorage';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
-import { QUERY_ME } from '../utils/queries';
-import { useQuery, useMutation } from '@apollo/react-hooks'; */
+
 
 const ReadBooks = () => {
-  /* 
-  const [userData, setUserData] = useState();
 
-  const [removeBook, { removeBookError }] = useMutation(REMOVE_BOOK);
+  const { loading, data } = useQuery(GET_ME);
+  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
-  const userProfile = Auth.getProfile();
+  // const [readBook, { error : err }] = useMutation(READ_BOOK)
 
-  let { loading, data } = useQuery(QUERY_ME, {
-    variables: { username: userProfile.data.username },
-  });
+  const userData = data?.me || {};
 
-  useEffect(() => {
-      if (data) {
-        setUserData(data.me);
-      }
-  }, [data]);
+  // create state to hold read bookId values
+  // const [readBookIds, setReadBookIds] = useState(getSavedBookIds({ name: 'read_books_list' }));
 
+  // useEffect(() => {
+  //   saveBookIds([], readBookIds);
+  // }, [readBookIds]);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -35,15 +32,18 @@ const ReadBooks = () => {
     if (!token) {
       return false;
     }
-    //loading = true;
-    try {
-      data = await removeBook({
-        variables: {...{bookId: bookId} }
-      })
 
-      //setUserData(data.me);
+    try {
+      await removeBook({
+        variables: { bookId }
+      });
+
+      if (error) {
+        throw new Error('Something went wrong!');
+      }
+
       // upon success, remove book's id from localStorage
-      removeBookId(bookId);
+      removeBookId(bookId, { name: 'read_books_list' });
     } catch (err) {
       console.error(err);
     }
@@ -53,40 +53,20 @@ const ReadBooks = () => {
   if (loading) {
     return <h2>LOADING...</h2>;
   }
-  if (data && !userData)
-  {
-    return <h2>CONFIGURING...</h2>;
-  } */
-
-// THIS BOOK IS USED FOR TESTING ONLY
-const book = {
-  title: "test book title",
-  description: 'test book description',
-  image: "./user_placeholder.png"
-}
-
-const [showReview, setShowReview] = React.useState(false);
 
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
         <Container>
-          <h1>Viewing Read Books!</h1>
+          <h1>Viewing saved books!</h1>
         </Container>
       </Jumbotron>
-      <button type="button" className="close" onClick={() => setShowReview(true)}>Show Review Form</button>
-      <ReviewForm book={book} showReview={showReview} setShowReview={setShowReview} />
-    </>
-  );
-};
-/* 
-    
-      <Container>
-        <h2>
+      <div className='container'>
+        <h5 className='text-center'>
           {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
+            ? `You have ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
-        </h2>
+        </h5>
         <CardColumns>
           {userData.savedBooks.map((book) => {
             return (
@@ -94,19 +74,20 @@ const [showReview, setShowReview] = React.useState(false);
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
                 <Card.Body>
                   <Card.Title>{book.title}</Card.Title>
+                  <a href={book.link} target='_blank' rel='noopener noreferrer'>Review on Google Books</a>
                   <p className='small'>Authors: {book.authors}</p>
-                  <Card.Text>{book.description}</Card.Text>
+                  <p>{book.description}</p>
                   <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
-                    Delete this Book!
+                    Remove Book From List!
                   </Button>
                 </Card.Body>
               </Card>
             );
           })}
         </CardColumns>
-      </Container>
+      </div>
     </>
   );
-}; */
+};
 
 export default ReadBooks;
