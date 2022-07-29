@@ -78,9 +78,9 @@ export const READ_BOOK = gql`
   }
 `;
 
-export const REMOVE_BOOK = gql`
-mutation saveBook($bookId: String!) {
-    removeBook(
+export const REMOVE_SAVED_BOOK = gql`
+mutation removeSavedBook($bookId: String!) {
+    removeSavedBook(
       bookId: $bookId
     ) {
         _id
@@ -93,27 +93,70 @@ mutation saveBook($bookId: String!) {
           description
           image
           link
-          }
-    }
-  }
-`
-
-export const ADD_REVIEW = gql`
-mutation saveBook($bookId: String!) {
-    removeBook(
-        bookId: $bookId
-    ) {
-        _id
-        username
-        email
-        savedBooks {
+        }
+        readBooks {
           bookId
           title
           authors
           description
           image
           link
-          }
+        }
+      }
+  }
+`;
+
+export const REMOVE_READ_BOOK = gql`
+mutation removeReadBook($bookId: String!) {
+    removeReadBook(bookId: $bookId) {
+      _id
+      username
+      email
+      savedBooks {
+        bookId
+        title
+        authors
+        description
+        image
+        link
+      }
+      readBooks {
+        bookId
+        title
+        authors
+        description
+        image
+        link
+      }
     }
   }
-`
+`;
+
+
+// export const ADD_REVIEW = gql`
+// mutation saveBook($bookId: String!) {
+//     removeBook(
+//         bookId: $bookId
+//     ) {
+//         _id
+//         username
+//         email
+//         savedBooks {
+//           bookId
+//           title
+//           authors
+//           description
+//           image
+//           link
+//         }
+//         readBooks {
+//           bookId
+//           title
+//           authors
+//           description
+//           image
+//           link
+//         }
+//     }
+//   }
+// `

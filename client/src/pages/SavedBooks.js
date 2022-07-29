@@ -5,14 +5,14 @@ import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap
 import Auth from '../utils/auth';
 import { removeBookId, getSavedBookIds, saveBookIds } from '../utils/localStorage';
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_ME } from '../utils/queries';
-import { REMOVE_BOOK } from '../utils/mutations';
+import { QUERY_ME } from '../utils/queries';
+import { REMOVE_SAVED_BOOK } from '../utils/mutations';
 
 
 const SavedBooks = () => {
 
-  const { loading, data } = useQuery(GET_ME);
-  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
+  const { loading, data } = useQuery(QUERY_ME);
+  const [removeBook, { error }] = useMutation(REMOVE_SAVED_BOOK);
 
   // const [readBook, { error : err }] = useMutation(READ_BOOK)
 

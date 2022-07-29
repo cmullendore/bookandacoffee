@@ -15,6 +15,14 @@ export const QUERY_ME = gql`
       image
       link
     }
+    readBooks {
+      bookId
+      title
+      authors
+      description
+      image
+      link
+    }
   }
 }
 `;
