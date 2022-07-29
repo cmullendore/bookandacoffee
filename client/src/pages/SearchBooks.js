@@ -66,7 +66,7 @@ const SearchBooks = () => {
   };
 
   // create function to handle saving a book to our database
-  const handleSaveBook = async (bookId, type) => {
+  const handleSaveBook = async (bookId, list) => {
 
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
@@ -78,7 +78,7 @@ const SearchBooks = () => {
       return false;
     }
 
-    switch (type.name) {
+    switch (list.name) {
       case 'save_books':
         try {
           await saveBook({
@@ -96,20 +96,20 @@ const SearchBooks = () => {
         }
         break;
       case 'read_books':
-        try {
-          await readBook({
-            variables: { book: { ...bookToSave } }
-          });
+        // try {
+        //   await readBook({
+        //     variables: { book: { ...bookToSave } }
+        //   });
 
-          if (err) {
-            throw new Error('Something went wrong!');
-          }
+        //   if (err) {
+        //     throw new Error('Something went wrong!');
+        //   }
 
-          setReadBookIds([...readBookIds, bookToSave.bookId]);
+        //   setReadBookIds([...readBookIds, bookToSave.bookId]);
 
-        } catch (err) {
-          console.error(err);
-        }
+        // } catch (err) {
+        //   console.error(err);
+        // }
         break;
       default:
         break;
@@ -159,7 +159,7 @@ const SearchBooks = () => {
                   <Card.Title>{book.title}</Card.Title>
                   <a href={book.link} target='_blank' rel='noopener noreferrer'>Review on Google Books</a>
                   <p className='small'>Authors: {book.authors}</p>
-                  <Card.Text>{book.description}</Card.Text>
+                  <p>{book.description}</p>
                   {Auth.loggedIn() && (
                     <div>
                       <Button
