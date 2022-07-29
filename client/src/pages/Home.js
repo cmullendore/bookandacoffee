@@ -1,10 +1,78 @@
 import React, { useState, useEffect } from 'react';
-import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
+import { Jumbotron, Container, Form, Alert, Button } from 'react-bootstrap';
 
-import Auth from '../utils/auth';
+import { useMutation } from "@apollo/react-hooks";
+
+// import { loginUser } from '../utils/API';
+import { LOGIN_USER } from "../utils/mutations";
+import { ADD_USER } from "../utils/mutations";
+
+import Auth from "../utils/auth";
 
 const Home = () => {
   
+
+  const [userFormData, setUserFormData] = useState({ email: "", password: "" });
+  const [login, { loginError }] = useMutation(LOGIN_USER);
+  const [addUser, { addUserError }] = useMutation(ADD_USER);
+  const [validated] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setUserFormData({ ...userFormData, [name]: value });
+  };
+
+  const handleLoginSubmit = async (event) => {
+    event.preventDefault();
+
+    // check if form has everything (as per react-bootstrap docs)
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    try {
+      const { data } = await login({
+        variables: { ...userFormData },
+      });
+      Auth.login(data.login.token);
+    } catch (err) {
+      setShowAlert(true);
+    }
+
+    setUserFormData({
+      username: "",
+      email: "",
+      password: "",
+    });
+  };
+
+  const handleSignupSubmit = async (event) => {
+    event.preventDefault();
+
+    // check if form has everything (as per react-bootstrap docs)
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    try {
+      const { data } = await addUser({
+        variables: { ...userFormData },
+      });
+      Auth.login(data.addUser.token);
+    } catch (err) {
+      setShowAlert(true);
+    }
+
+    setUserFormData({
+      username: "",
+      email: "",
+      password: "",
+    });
+  };
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
@@ -12,7 +80,132 @@ const Home = () => {
           <h1>Viewing Home</h1>
         </Container>
       </Jumbotron>
+
+
+      <Form noValidate validated={validated} onSubmit={handleLoginSubmit}>
+        <Alert
+          dismissible
+          onClose={() => setShowAlert(false)}
+          show={showAlert}
+          variant="danger"
+        >
+          Something went wrong with your login credentials!
+        </Alert>
+        <Form.Group>
+          <Form.Label htmlFor="email">Email</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Your email"
+            name="email"
+            onChange={handleInputChange}
+            value={userFormData.email}
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Email is required!
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label htmlFor="password">Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Your password"
+            name="password"
+            onChange={handleInputChange}
+            value={userFormData.password}
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Password is required!
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Button
+          disabled={!(userFormData.email && userFormData.password)}
+          type="submit"
+          variant="success"
+        >
+          Submit
+        </Button>
+      </Form>
+
+
+      {/* This is needed for the validation functionality above */}
+      <Form noValidate validated={validated} onSubmit={handleSignupSubmit}>
+        {/* show alert if server response is bad */}
+        <Alert
+          dismissible
+          onClose={() => setShowAlert(false)}
+          show={showAlert}
+          variant="danger"
+        >
+          Something went wrong with your signup!
+        </Alert>
+
+        <Form.Group>
+          <Form.Label htmlFor="username">Username</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Your username"
+            name="username"
+            onChange={handleInputChange}
+            value={userFormData.username}
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Username is required!
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label htmlFor="email">Email</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Your email address"
+            name="email"
+            onChange={handleInputChange}
+            value={userFormData.email}
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Email is required!
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label htmlFor="password">Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Your password"
+            name="password"
+            onChange={handleInputChange}
+            value={userFormData.password}
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Password is required!
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Button
+          disabled={
+            !(
+              userFormData.username &&
+              userFormData.email &&
+              userFormData.password
+            )
+          }
+          type="submit"
+          variant="success"
+        >
+          Submit
+        </Button>
+      </Form>
+
+
     </>
+
+
+
   );
 };
 /*
