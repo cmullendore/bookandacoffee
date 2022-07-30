@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
-import { REMOVE_READ_BOOK } from '../utils/mutations';
+import { REMOVE_BOOK } from '../utils/mutations';
 import ReviewForm from '../components/ReviewForm';
 
 
@@ -15,6 +15,10 @@ const ReadBooks = () => {
   const [removeReadBook, { error }] = useMutation(REMOVE_BOOK);
 
   const userData = data?.me || {};
+
+  const [showReview, setShowReview] = useState(false);
+
+  const [reviewBookData, setReviewBookData] = useState({});
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -40,6 +44,11 @@ const ReadBooks = () => {
     }
   };
 
+  function handleWriteReview(book) {
+    setReviewBookData({ ...book });
+    setShowReview(true);
+  };
+
   // if data isn't here yet, say so
   if (loading) {
     return <h2>LOADING...</h2>;
@@ -58,6 +67,7 @@ const ReadBooks = () => {
             ? `You have read ${userData.readBooks.length} ${userData.readBooks.length === 1 ? 'book' : 'books'}:`
             : "You haven't read any book yet!"}
         </h5>
+        {showReview && <ReviewForm showReview={showReview} setShowReview={setShowReview} reviewBookData={reviewBookData} />}
         <CardColumns>
           {userData.readBooks.map((book) => {
             return (
