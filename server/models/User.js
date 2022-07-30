@@ -51,7 +51,7 @@ const userSchema = new Schema(
     },
     userProfilePicURL: {
       type: String,
-      default: "https://tinyurl.com/4dzr8d73",
+      default: "https://tinyurl.com/ysfu8xnz",
       required: false
     }
 

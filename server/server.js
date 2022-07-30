@@ -34,6 +34,7 @@ const consoleLogger = (req, res, next) => {
 app.use(consoleLogger);
 
 const clientPath = path.resolve('client/build');
+  console.log(clientPath)
 
 if (fs.existsSync(clientPath)) {
   console.log("Located client app files")
