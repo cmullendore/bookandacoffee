@@ -14,7 +14,19 @@ export const QUERY_ME = gql`
       description
       image
       link
+      subject
     }
+    readBooks {
+      bookId
+      title
+      authors
+      description
+      image
+      link
+      subject
+    }
+    favoriteSubjects
+    userProfilePicURL
   }
 }
 `;
