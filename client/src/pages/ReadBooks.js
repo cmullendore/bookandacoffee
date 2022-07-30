@@ -6,12 +6,13 @@ import { removeBookId } from '../utils/localStorage';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
 import { REMOVE_READ_BOOK } from '../utils/mutations';
+import ReviewForm from '../components/ReviewForm';
 
 
 const ReadBooks = () => {
 
   const { loading, data } = useQuery(QUERY_ME);
-  const [removeReadBook, { error }] = useMutation(REMOVE_READ_BOOK);
+  const [removeReadBook, { error }] = useMutation(REMOVE_BOOK);
 
   const userData = data?.me || {};
 
@@ -25,7 +26,7 @@ const ReadBooks = () => {
 
     try {
       await removeReadBook({
-        variables: { bookId }
+        variables: { bookId, listName: 'read' }
       });
 
       if (error) {

@@ -12,9 +12,9 @@ const resolvers = {
 
             throw new AuthenticationError('Not logged in');
         },
-        bookReviews: async (parent, {skip = 0, limit = 10}) => {
+        bookReviews: async (parent, { skip = 0, limit = 10 }) => {
             const reviews = await BookReview.find({})
-                .sort({createdOn:-1})
+                .sort({ createdOn: -1 })
                 .skip(skip)
                 .limit(limit);
             return reviews;
@@ -75,15 +75,28 @@ const resolvers = {
 
             throw new AuthenticationError('Incorrect credentials');
         },
-        removeBook: async (parent, { bookId }, context) => {
+        removeBook: async (parent, { bookId, listName }, context) => {
             if (context.user) {
-                const updatedUser = await User.findByIdAndUpdate(
-                    { _id: context.user._id },
-                    { $pull: { savedBooks: { bookId } } },
-                    { new: true }
-                );
+                switch (listName) {
+                    case 'saved':
+                        const updatedUserSavedBookList = await User.findByIdAndUpdate(
+                            { _id: context.user._id },
+                            { $pull: { savedBooks: { bookId } } },
+                            { new: true }
+                        );
 
-                return updatedUser;
+                        return updatedUserSavedBookList;
+                    case 'read':
+                        const updatedUserReadBookList = await User.findByIdAndUpdate(
+                            { _id: context.user._id },
+                            { $pull: { readBooks: { bookId } } },
+                            { new: true }
+                        );
+
+                        return updatedUserReadBookList;
+                    default:
+                        break;
+                }
             }
 
             throw new AuthenticationError('Incorrect credentials');

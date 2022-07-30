@@ -78,10 +78,11 @@ export const READ_BOOK = gql`
   }
 `;
 
-export const REMOVE_SAVED_BOOK = gql`
-mutation removeSavedBook($bookId: String!) {
-    removeSavedBook(
-      bookId: $bookId
+export const REMOVE_BOOK = gql`
+mutation removeBook($bookId: String!, $listName: String!) {
+    removeBook(
+      bookId: $bookId,
+      listName: $listName
     ) {
         _id
         username
@@ -103,32 +104,6 @@ mutation removeSavedBook($bookId: String!) {
           link
         }
       }
-  }
-`;
-
-export const REMOVE_READ_BOOK = gql`
-mutation removeReadBook($bookId: String!) {
-    removeReadBook(bookId: $bookId) {
-      _id
-      username
-      email
-      savedBooks {
-        bookId
-        title
-        authors
-        description
-        image
-        link
-      }
-      readBooks {
-        bookId
-        title
-        authors
-        description
-        image
-        link
-      }
-    }
   }
 `;
 
