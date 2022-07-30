@@ -13,13 +13,14 @@ const SavedBooks = () => {
 
   const { loading, data } = useQuery(QUERY_ME);
 
+  // Since we're using the userData object to render the component
+  // we have to track it as state. Whenever we call setUserState, 
+  // the rendered components will update.
   const [userData, setUserData] = useState();
 
   const [removeSavedBook, { error }] = useMutation(REMOVE_BOOK);
 
   const [readBook, { error: err }] = useMutation(READ_BOOK)
-
-  //const userData = data?.me || {};
 
   // create state to hold read bookId values
   const [readBookIds, setReadBookIds] = useState(getSavedBookIds({ name: 'read_books_list' }));
@@ -39,17 +40,19 @@ const SavedBooks = () => {
 
     try {
       
-      let removeResult = await removeSavedBook({
+      const removeBook = await removeSavedBook({
         variables: { bookId, listName: 'saved' }
       });
 
-      setUserData(removeResult.me);
-      
+      // When we remove the book we receive an update of the user
+      // with the book removed. In order for that change to be reflected
+      // on the screen, we have to call setUserData with the updated "user" object
+      setUserData(removeBook.data.removeBook);
 
       if (error) {
         throw new Error('Something went wrong!');
       }
-      console.log("got here");
+      
       // upon success, remove book's id from localStorage
       removeBookId(bookId, { name: 'saved_books_list' });
     } catch (err) {
@@ -86,11 +89,17 @@ const SavedBooks = () => {
   }
 
   // if data isn't here yet, say so
-  if (loading || !(data) || !(data.me)) {
+  if (loading) {
     return <h2>LOADING...</h2>;
   }
-  console.log(data);
-  setUserData(data.me);
+  if (data && !userData)
+  {
+    // While we're loading we don't want to call setUserData because there's no data yet.
+    // but once data IS loaded, call setUserData... but only if userData is null.
+    // If we called setUserData every time userData changed, we'd be in an infinite loop.
+    setUserData(data.me);
+    return <h2>CONFIGURING...</h2>;
+  }
 
   return (
     <>
@@ -119,7 +128,8 @@ const SavedBooks = () => {
                     className='btn-block btn-info'
                     onClick={() => handleReadBook(book)}>Finished Reading Book!
                   </Button>
-                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
+                  {/* This was originally "book.bookId", but remember that bookId is the GOOGLE id... we need the database "_id" */}
+                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book._id)}>
                     Remove Book From List!
                   </Button>
                 </Card.Body>

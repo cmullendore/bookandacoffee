@@ -90,15 +90,17 @@ const resolvers = {
 
                 const updatedUserSavedBookList = await User.findByIdAndUpdate(
                     { _id: context.user._id },
-                    { $pull: { savedBooks: { bookId } } },
+                    { $pull: { savedBooks: bookId } }, // this works
                     { new: true }
                 ).populate('savedBooks').populate('readBooks');
 
                 return updatedUserSavedBookList;
-            } else if (context.user && listName === 'read') {
+            } 
+            else if (context.user && listName === 'read') {
+
                 const updatedUserReadBookList = await User.findByIdAndUpdate(
                     { _id: context.user._id },
-                    { $pull: { readBooks: { bookId } } },
+                    { $pull: { readBooks: { bookId } } }, // don't think this will work
                     { new: true }
                 ).populate('savedBooks').populate('readBooks');
 
