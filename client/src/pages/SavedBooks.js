@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
 // import { getMe, deleteBook } from '../utils/API';
@@ -6,27 +6,31 @@ import Auth from '../utils/auth';
 import { removeBookId, getSavedBookIds, saveBookIds } from '../utils/localStorage';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
-import { REMOVE_BOOK } from '../utils/mutations';
+import { REMOVE_BOOK, READ_BOOK } from '../utils/mutations';
 
 
 const SavedBooks = () => {
 
   const { loading, data } = useQuery(QUERY_ME);
+
+  const [userData, setUserData] = useState();
+
   const [removeSavedBook, { error }] = useMutation(REMOVE_BOOK);
 
-  // const [readBook, { error : err }] = useMutation(READ_BOOK)
+  const [readBook, { error: err }] = useMutation(READ_BOOK)
 
-  const userData = data?.me || {};
+  //const userData = data?.me || {};
 
   // create state to hold read bookId values
-  // const [readBookIds, setReadBookIds] = useState(getSavedBookIds({ name: 'read_books_list' }));
+  const [readBookIds, setReadBookIds] = useState(getSavedBookIds({ name: 'read_books_list' }));
 
-  // useEffect(() => {
-  //   saveBookIds([], readBookIds);
-  // }, [readBookIds]);
+  useEffect(() => {
+    saveBookIds([], readBookIds);
+  }, [readBookIds]);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
+
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -34,14 +38,18 @@ const SavedBooks = () => {
     }
 
     try {
-      await removeSavedBook({
+      
+      let removeResult = await removeSavedBook({
         variables: { bookId, listName: 'saved' }
       });
+
+      setUserData(removeResult.me);
+      
 
       if (error) {
         throw new Error('Something went wrong!');
       }
-
+      console.log("got here");
       // upon success, remove book's id from localStorage
       removeBookId(bookId, { name: 'saved_books_list' });
     } catch (err) {
@@ -49,12 +57,7 @@ const SavedBooks = () => {
     }
   };
 
-  // if data isn't here yet, say so
-  if (loading) {
-    return <h2>LOADING...</h2>;
-  }
-
-  function handleReadBook(book) {
+  async function handleReadBook(book) {
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -64,23 +67,30 @@ const SavedBooks = () => {
 
     console.log(book);
 
-    // try {
-    //   await readBook({
-    //     variables: { book: { ...book } }
-    //   });
+    try {
+      await readBook({
+        variables: { book: { ...book } }
+      });
 
-    //   if (err) {
-    //     throw new Error('Something went wrong!');
-    //   }
+      if (err) {
+        throw new Error('Something went wrong!');
+      }
 
-    //   setReadBookIds([...readBookIds, book.bookId]);
+      setReadBookIds([...readBookIds, book.bookId]);
 
-    // } catch (err) {
-    //   console.error(err);
-    // }
+    } catch (err) {
+      console.error(err);
+    }
 
     handleDeleteBook(book.bookId);
   }
+
+  // if data isn't here yet, say so
+  if (loading || !(data) || !(data.me)) {
+    return <h2>LOADING...</h2>;
+  }
+  console.log(data);
+  setUserData(data.me);
 
   return (
     <>

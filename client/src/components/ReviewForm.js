@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Form, Button, Alert, Modal } from "react-bootstrap";
 import { useMutation } from "@apollo/react-hooks";
 
-import { ADD_REVIEW } from "../utils/mutations";
+// import { ADD_REVIEW } from "../utils/mutations";
 
 
 const ReviewForm = ({book, showReview, setShowReview}) => {
 
     /* this is only for testing and should be removed */
 
-  const [addReview, { error }] = useMutation(ADD_REVIEW);
+  // const [addReview, { error }] = useMutation(ADD_REVIEW);
 
   // set initial form state
   const [reviewData, setReviewData] = useState({
@@ -28,21 +28,23 @@ const ReviewForm = ({book, showReview, setShowReview}) => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    console.log(reviewData);
 
-    try {
-      const { data } = await addReview({
-        variables: { ...[book, reviewData] },
-      });
-      setNotificationText('Your review was saved successfully');
-    } catch (err) {
-      setNotificationText("There was an issue saving your review.");
-    }
+    // // check if form has everything (as per react-bootstrap docs)
+    // const form = event.currentTarget;
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    // }
+
+    // try {
+    //   const { data } = await addReview({
+    //     variables: { ...[book, reviewData] },
+    //   });
+    //   setNotificationText('Your review was saved successfully');
+    // } catch (err) {
+    //   setNotificationText("There was an issue saving your review.");
+    // }
   };
 
   return (

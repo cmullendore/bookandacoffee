@@ -1,12 +1,13 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { Book, User, BookReview } = require('../models');
+const { User, BookReview, Book } = require('../models');
+const { create } = require('../models/Book');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
     Query: {
         me: async (parent, args, context) => {
             if (context.user) {
-                const userData = await User.findOne({ _id: context.user._id })
+                const userData = await User.findOne({ _id: context.user._id }).select('-__v -password').populate('savedBooks').populate('readBooks');
                 return userData;
             }
 
@@ -48,25 +49,34 @@ const resolvers = {
             return { token, user };
         },
         saveBook: async (parent, { book }, context) => {
+
+            const { title, authors, description, image, link } = book;
+
             if (context.user) {
+                const findBook = await Book.findOneAndUpdate({ bookId: book.bookId }, { title, authors, description, image, link }, { new: true, upsert: true })
 
                 const updatedUser = await User.findByIdAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: book } },
+                    { $addToSet: { savedBooks: findBook._id } },
                     { new: true }
                 );
 
                 return updatedUser;
+
             }
 
             throw new AuthenticationError('Incorrect credentials');
         },
         readBook: async (parent, { book }, context) => {
+
+            const { title, authors, description, image, link } = book;
+
             if (context.user) {
+                const findBook = await Book.findOneAndUpdate({ bookId: book.bookId }, { title, authors, description, image, link }, { new: true, upsert: true })
 
                 const updatedUser = await User.findByIdAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { readBooks: book } },
+                    { $addToSet: { readBooks: findBook._id } },
                     { new: true }
                 );
 
@@ -76,46 +86,43 @@ const resolvers = {
             throw new AuthenticationError('Incorrect credentials');
         },
         removeBook: async (parent, { bookId, listName }, context) => {
-            if (context.user) {
-                switch (listName) {
-                    case 'saved':
-                        const updatedUserSavedBookList = await User.findByIdAndUpdate(
-                            { _id: context.user._id },
-                            { $pull: { savedBooks: { bookId } } },
-                            { new: true }
-                        );
+            if (context.user && listName === 'saved') {
 
-                        return updatedUserSavedBookList;
-                    case 'read':
-                        const updatedUserReadBookList = await User.findByIdAndUpdate(
-                            { _id: context.user._id },
-                            { $pull: { readBooks: { bookId } } },
-                            { new: true }
-                        );
+                const updatedUserSavedBookList = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: { bookId } } },
+                    { new: true }
+                ).populate('savedBooks').populate('readBooks');
 
-                        return updatedUserReadBookList;
-                    default:
-                        break;
-                }
+                return updatedUserSavedBookList;
+            } else if (context.user && listName === 'read') {
+                const updatedUserReadBookList = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { readBooks: { bookId } } },
+                    { new: true }
+                ).populate('savedBooks').populate('readBooks');
+
+                return updatedUserReadBookList;
             }
 
             throw new AuthenticationError('Incorrect credentials');
         }
-        /* - The final version of this SHOULD use the context
-        addReview: async (parent, { bookId, userId, content }, context) => {
-            if (context.user) {
-                const updatedUser = await User.findByIdAndUpdate(
-                    { _id: context.user._id },
-                    { $pull: { savedBooks: { bookId } } },
-                    { new: true }
-                );
-
-                return updatedUser;
-            }
-        
-        }
-        */
     }
-};
+    /* - The final version of this SHOULD use the context
+    addReview: async (parent, { bookId, userId, content }, context) => {
+        if (context.user) {
+            const updatedUser = await User.findByIdAndUpdate(
+                { _id: context.user._id },
+                { $pull: { savedBooks: { bookId } } },
+                { new: true }
+            );
+
+            return updatedUser;
+        }
+    
+    }
+    */
+}
+
 
 module.exports = resolvers;

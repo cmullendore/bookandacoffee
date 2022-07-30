@@ -11,7 +11,7 @@ const SearchBooks = () => {
   // create function for saving a book to user's book list in database
   const [saveBook, { error }] = useMutation(SAVE_BOOK);
 
-  const [readBook, { error : err }] = useMutation(READ_BOOK);
+  const [readBook, { error: err }] = useMutation(READ_BOOK);
 
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
@@ -65,6 +65,8 @@ const SearchBooks = () => {
     }
   };
 
+
+
   // create function to handle saving a book to our database
   const handleSaveBook = async (bookId, list) => {
 
@@ -96,20 +98,20 @@ const SearchBooks = () => {
         }
         break;
       case 'read_books':
-        // try {
-        //   await readBook({
-        //     variables: { book: { ...bookToSave } }
-        //   });
+        try {
+          await readBook({
+            variables: { book: { ...bookToSave } }
+          });
 
-        //   if (err) {
-        //     throw new Error('Something went wrong!');
-        //   }
+          if (err) {
+            throw new Error('Something went wrong!');
+          }
 
-        //   setReadBookIds([...readBookIds, bookToSave.bookId]);
+          setReadBookIds([...readBookIds, bookToSave.bookId]);
 
-        // } catch (err) {
-        //   console.error(err);
-        // }
+        } catch (err) {
+          console.error(err);
+        }
         break;
       default:
         break;
