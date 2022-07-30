@@ -5,6 +5,7 @@ import SignUpForm from './SignupForm';
 import LoginForm from './LoginForm';
 import ReviewForm from './ReviewForm';
 import Auth from '../utils/auth';
+import SignupForm from './SignupForm';
 
 const Navtabs = ({ currentPage, handlePageChange }) => {
   // set modal display state
@@ -15,7 +16,7 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
       <Navbar bg='dark' variant='dark' expand='lg'>
         <Container fluid>
           <Navbar.Brand>
-            Google Books Search
+            <a href="#">Google Books Search </a>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbar' />
           <Navbar.Collapse id='navbar'>
