@@ -58,7 +58,6 @@ input BookInput {
     saveBook(book: BookInput!): User
     readBook(book: BookInput!): User
     removeBook(bookId: String!, listName: String!): User
-    removeUserBook(bookId: String!, listName: String!, userId: String!): User
     addReview(bookId: String!, userId: String, content: String): User
   }
 
