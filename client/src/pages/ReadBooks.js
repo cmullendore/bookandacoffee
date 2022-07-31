@@ -64,17 +64,6 @@ const ReadBooks = () => {
     return <h2>CONFIGURING...</h2>;
   } 
 
-// THIS BOOK IS USED FOR TESTING ONLY
-const book = {
-  title: "test book title",
-  description: 'test book description',
-  image: "./user_placeholder.png"
-}
-
-
-// const [showReview, setShowReview] = React.useState(false);
-//   }
-
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
