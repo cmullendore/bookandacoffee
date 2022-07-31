@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 import Auth from "../utils/auth";
 import { ADD_USER } from "../utils/mutations";
 
-const SignupForm = () => {
+const SignupModal = ({showSignup, setShowSignup}) => {
   // set initial form state
   const [userFormData, setUserFormData] = useState({
     username: "",
@@ -52,50 +52,37 @@ const SignupForm = () => {
     });
   };
 
-  // import React, { useState } from 'react';
-  // import Button from 'react-bootstrap/Button';
-  // import Modal from 'react-bootstrap/Modal';
-  
-  // function SignupModal() {
-  //   const [show, setShow] = useState(false);
-  
-  //   const handleClose = () => setShow(false);
-  //   const handleShow = () => setShow(true);
-  
-    
-  
-  
-  //   return (
-  //     <>
-  //       <Button variant="primary" onClick={handleShow}>
-  //         Launch demo modal
-  //       </Button>
-  
-  //       <Modal show={show} onHide={handleClose}>
-  //         <Modal.Header closeButton>
-  //           <Modal.Title>Modal heading</Modal.Title>
-  //         </Modal.Header>
-  //         <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-  //         <Modal.Footer>
-  //           <Button variant="secondary" onClick={handleClose}>
-  //             Close
-  //           </Button>
-  //           <Button variant="primary" onClick={handleClose}>
-  //             Save Changes
-  //           </Button>
-  //         </Modal.Footer>
-  //       </Modal>
-  //     </>
-  //   );
-  // }
-  
-  // render(<Example />);
-  
-  // export default SignupModal;
-
 
   return (
     <>
+    {/* This is needed for the validation functionality above */}
+
+
+
+    <Modal
+      size='lg'
+      show={showSignup}
+      onHide={() => setShowSignup(false)}
+      aria-labelledby='signup-modal'>
+      {/* tab container to do either signup or login component */}
+
+      <div role="dialog" aria-modal="true" aria-labelledby="signup-modal" className="fade modal show" tabIndex="-1"
+        style={{ display: 'block' }}>
+        <div role="document" className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <div className="modal-header">
+                <h2>Signup</h2>
+              <button type="button" className="close" onClick={() => setShowSignup(false)}><span aria-hidden="true">×</span><span
+              className="sr-only">Close</span>
+              </button>
+            </div>
+            
+            <div className="modal-body">
+
+
+
+
+
       {/* This is needed for the validation functionality above */}
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         {/* show alert if server response is bad */}
@@ -166,8 +153,23 @@ const SignupForm = () => {
           Submit
         </Button>
       </Form>
+
+
+
+
+
+
+
+      </div>
+            </div>
+
+          </div>
+        </div>
+      </Modal>
+
+
     </>
   );
 };
 
-export default SignupForm;
+export default SignupModal;
