@@ -62,8 +62,7 @@ const ReadBooks = () => {
     // If we called setUserData every time userData changed, we'd be in an infinite loop.
     setUserData(data.me);
     return <h2>CONFIGURING...</h2>;
-<<<<<<< HEAD
-  } */
+  } 
 
 // THIS BOOK IS USED FOR TESTING ONLY
 const book = {
@@ -73,10 +72,8 @@ const book = {
 }
 
 
-const [showReview, setShowReview] = React.useState(false);
-=======
-  }
->>>>>>> a5f1ba61db7ad3e0856876ae4e323aebcb92937d
+// const [showReview, setShowReview] = React.useState(false);
+//   }
 
   return (
     <>
