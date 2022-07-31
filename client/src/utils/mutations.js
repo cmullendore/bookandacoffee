@@ -110,30 +110,47 @@ mutation removeBook($bookId: String!, $listName: String!) {
 `;
 
 
-// export const ADD_REVIEW = gql`
-// mutation saveBook($bookId: String!) {
-//     removeBook(
-//         bookId: $bookId
-//     ) {
-//         _id
-//         username
-//         email
-//         savedBooks {
-//           bookId
-//           title
-//           authors
-//           description
-//           image
-//           link
-//         }
-//         readBooks {
-//           bookId
-//           title
-//           authors
-//           description
-//           image
-//           link
-//         }
-//     }
-//   }
-// `
+export const ADD_REVIEW = gql`
+mutation addReview($bookId: String!, $content: String!, $title: String!) {
+    addReview(bookId: $bookId, content: $content, title: $title) {
+      _id
+      username
+      email
+      savedBooks {
+        bookId
+        title
+        authors
+        description
+        image
+        link
+      }
+      readBooks {
+        bookId
+        title
+        authors
+        description
+        image
+        link
+      }
+      bookReviews {
+        _id
+        user {
+          _id
+          username
+        }
+        book {
+          _id
+          bookId
+          title
+          authors
+          description
+          image
+          link
+        }
+        title
+        content
+        createdAt
+      }
+    }
+  }
+`

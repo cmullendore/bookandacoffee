@@ -102,6 +102,8 @@ const SavedBooks = () => {
     return <h2>CONFIGURING...</h2>;
   }
 
+  console.log(userData);
+
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
