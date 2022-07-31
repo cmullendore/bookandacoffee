@@ -91,7 +91,7 @@ const ReviewForm = ({ book, showReview, setShowReview }) => {
                     <Form.Label htmlFor="title">Title</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Provide a title for your review"
+                      placeholder="Provide a Title for Your Review"
                       name="title"
                       onChange={handleInputChange}
                       value={reviewData.title}
@@ -105,8 +105,8 @@ const ReviewForm = ({ book, showReview, setShowReview }) => {
                   <Form.Group>
                     <Form.Label htmlFor="content">Review Content</Form.Label>
                     <Form.Control
-                      type="text"
-                      placeholder="Write your review here"
+                      as="textarea" rows={5}
+                      placeholder="Write your Review Here"
                       name="content"
                       onChange={handleInputChange}
                       value={reviewData.content}

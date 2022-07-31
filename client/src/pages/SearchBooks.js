@@ -170,7 +170,7 @@ const SearchBooks = () => {
                         onClick={() => handleSaveBook(book.bookId, { name: 'save_books' })}>
                         {savedBookIds?.some((savedBookId) => savedBookId === book.bookId)
                           ? 'This book is already in your Saved Books List!'
-                          : 'Save to Read!'}
+                          : 'Save!'}
                       </Button>
                       <Button
                         disabled={readBookIds?.some((readBookId) => readBookId === book.bookId)}
