@@ -10,7 +10,8 @@ const resolvers = {
                 const userData = await User.findOne({ _id: context.user._id })
                     .select('-__v -password')
                     .populate('savedBooks')
-                    .populate('readBooks');
+                    .populate('readBooks')
+                    .populate('bookReviews');
                 return userData;
             }
 
@@ -95,7 +96,7 @@ const resolvers = {
                     { _id: context.user._id },
                     { $pull: { savedBooks: bookId } }, // this works
                     { new: true }
-                ).populate('savedBooks').populate('readBooks');
+                ).populate('savedBooks').populate('readBooks').populate('bookReviews');;
 
                 return updatedUserSavedBookList;
             }
@@ -105,7 +106,7 @@ const resolvers = {
                     { _id: context.user._id },
                     { $pull: { readBooks: bookId } }, // don't think this will work
                     { new: true }
-                ).populate('savedBooks').populate('readBooks');
+                ).populate('savedBooks').populate('readBooks').populate('bookReviews');;
 
                 return updatedUserReadBookList;
             }
@@ -123,7 +124,8 @@ const resolvers = {
                 )
                     .select('-__v -password')
                     .populate('savedBooks')
-                    .populate('readBooks');
+                    .populate('readBooks')
+                    .populate('bookReviews');;
 
                 return updatedUser;
             }
