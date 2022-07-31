@@ -32,6 +32,7 @@ export const SAVE_BOOK = gql`
       email
       bookCount
       savedBooks {
+        _id
         bookId
         authors
         description
@@ -40,12 +41,32 @@ export const SAVE_BOOK = gql`
         link
       }
       readBooks {
+        _id
         bookId
         authors
         description
         title
         image
         link
+      }
+      bookReviews {
+        _id
+        user {
+          _id
+          username
+        }
+        book {
+          _id
+          bookId
+          title
+          authors
+          description
+          image
+          link
+        }
+        title
+        content
+        createdAt
       }
     }
   }
@@ -59,6 +80,7 @@ export const READ_BOOK = gql`
       email
       bookCount
       savedBooks {
+        _id
         bookId
         authors
         description
@@ -67,12 +89,32 @@ export const READ_BOOK = gql`
         link
       }
       readBooks {
+        _id
         bookId
         authors
         description
         title
         image
         link
+      }
+      bookReviews {
+        _id
+        user {
+          _id
+          username
+        }
+        book {
+          _id
+          bookId
+          title
+          authors
+          description
+          image
+          link
+        }
+        title
+        content
+        createdAt
       }
     }
   }
@@ -105,6 +147,25 @@ mutation removeBook($bookId: String!, $listName: String!) {
           image
           link
         }
+        bookReviews {
+          _id
+          user {
+            _id
+            username
+          }
+          book {
+            _id
+            bookId
+            title
+            authors
+            description
+            image
+            link
+          }
+          title
+          content
+          createdAt
+        }
       }
   }
 `;
@@ -117,6 +178,7 @@ mutation addReview($bookId: String!, $content: String!, $title: String!) {
       username
       email
       savedBooks {
+        _id
         bookId
         title
         authors
@@ -125,6 +187,7 @@ mutation addReview($bookId: String!, $content: String!, $title: String!) {
         link
       }
       readBooks {
+        _id
         bookId
         title
         authors

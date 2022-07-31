@@ -20,8 +20,6 @@ const ReadBooks = () => {
 
   const [reviewBookData, setReviewBookData] = useState({});
 
-  const [bookId, setBookId] = useState();
-
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId, localStorageId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -49,11 +47,7 @@ const ReadBooks = () => {
   };
 
   function handleWriteReview(book) {
-    const { _id, bookId, authors, description, title, image, link } = book;
-
-
-    setBookId(_id);
-    setReviewBookData({ bookId, authors, description, title, image, link });
+    setReviewBookData({ ...book });
     setShowReview(true);
   };
 
@@ -83,7 +77,7 @@ const ReadBooks = () => {
             ? `You have read ${userData.readBooks.length} ${userData.readBooks.length === 1 ? 'book' : 'books'}:`
             : "You haven't read any book yet!"}
         </h5>
-        {showReview && <ReviewForm showReview={showReview} setShowReview={setShowReview} book={reviewBookData} bookId={bookId} />}
+        {showReview && <ReviewForm book={reviewBookData} showReview={showReview} setShowReview={setShowReview} />}
         <CardColumns>
           {userData.readBooks.map((book) => {
             return (

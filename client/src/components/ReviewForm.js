@@ -5,11 +5,11 @@ import { useMutation } from "@apollo/react-hooks";
 import { ADD_REVIEW } from "../utils/mutations";
 
 
-const ReviewForm = ({ book, showReview, setShowReview, bookId }) => {
+const ReviewForm = ({ book, showReview, setShowReview }) => {
 
   /* this is only for testing and should be removed */
 
-  const [addReview, { error }] = useMutation(ADD_REVIEW);
+  const [addReview] = useMutation(ADD_REVIEW);
 
   // set initial form state
   const [reviewData, setReviewData] = useState({
@@ -28,8 +28,6 @@ const ReviewForm = ({ book, showReview, setShowReview, bookId }) => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(reviewData);
-
     // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -39,10 +37,9 @@ const ReviewForm = ({ book, showReview, setShowReview, bookId }) => {
 
     try {
       const { data } = await addReview({
-        variables: { bookId, ...book, ...reviewData },
+        variables: { bookId: book._id, ...reviewData },
       });
       setNotificationText('Your review was saved successfully');
-      console.log(data.addReview);
     } catch (err) {
       setNotificationText("There was an issue saving your review.");
     }

@@ -56,7 +56,6 @@ const SavedBooks = () => {
       // upon success, remove book's id from localStorage
       removeBookId(localStorageId, { name: 'saved_books_list' });
 
-      console.log('here')
     } catch (err) {
       console.error(err);
     }
@@ -64,7 +63,7 @@ const SavedBooks = () => {
 
   async function handleReadBook(book) {
 
-    const { bookId, authors, description, title, image, link } = book;
+    const { _id, bookId, authors, description, title, image, link } = book;
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -87,7 +86,7 @@ const SavedBooks = () => {
       console.error(err);
     }
 
-    handleDeleteBook(book._id, bookId);
+    handleDeleteBook(_id, bookId);
   }
 
   // if data isn't here yet, say so
@@ -101,8 +100,6 @@ const SavedBooks = () => {
     setUserData(data.me);
     return <h2>CONFIGURING...</h2>;
   }
-
-  console.log(userData);
 
   return (
     <>
