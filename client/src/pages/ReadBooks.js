@@ -62,7 +62,7 @@ const ReadBooks = () => {
     // If we called setUserData every time userData changed, we'd be in an infinite loop.
     setUserData(data.me);
     return <h2>CONFIGURING...</h2>;
-  }
+  } 
 
   return (
     <>
