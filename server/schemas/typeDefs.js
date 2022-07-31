@@ -18,9 +18,11 @@ input BookInput {
     email: String
     bookCount: Int
     savedBooks: [Book]
+    readBooks: [Book]
   }
 
   type Book {
+    _id: ID
     bookId: String
     authors: [String]
     description: String
@@ -30,7 +32,7 @@ input BookInput {
   }
 
   type BookReview {
-    _id: [ID]
+    _id: ID
     user: User
     book: Book
     title: String
@@ -54,7 +56,8 @@ input BookInput {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
     saveBook(book: BookInput!): User
-    removeBook(bookId: String!): User
+    readBook(book: BookInput!): User
+    removeBook(bookId: String!, listName: String!): User
     addReview(bookId: String!, userId: String, content: String): User
   }
 

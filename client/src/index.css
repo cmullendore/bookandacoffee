@@ -15,3 +15,36 @@ h6 {
   font-weight: 300;
   font-style: italic;
 }
+
+.search-books-form-div {
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+
+}
+
+.search-books-form {
+  margin: 10px 0;
+}
+
+.search-books-form label {
+  margin: 10px;
+}
+
+.search-books-form input {
+  padding: 8px;
+  font-size: 18px;
+  border-radius: 5px;
+  font-weight: bold;
+  width: 85%;
+}
+
+.search-form-btn {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  font-weight: bold;
+  background-color: aliceblue;
+}

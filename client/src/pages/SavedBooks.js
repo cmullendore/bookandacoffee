@@ -1,79 +1,120 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
-/* //import { getMe, deleteBook } from '../utils/API';
+// import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
-
-import { REMOVE_BOOK } from '../utils/mutations';
+import { removeBookId, getSavedBookIds, saveBookIds } from '../utils/localStorage';
+import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
-import { useQuery, useMutation } from '@apollo/react-hooks'; */
+import { REMOVE_BOOK, READ_BOOK } from '../utils/mutations';
+
 
 const SavedBooks = () => {
-  /* 
+
+  const { loading, data } = useQuery(QUERY_ME);
+
+  // Since we're using the userData object to render the component
+  // we have to track it as state. Whenever we call setUserState, 
+  // the rendered components will update.
   const [userData, setUserData] = useState();
 
-  const [removeBook, { removeBookError }] = useMutation(REMOVE_BOOK);
+  const [removeSavedBook, { error }] = useMutation(REMOVE_BOOK);
 
-  const userProfile = Auth.getProfile();
+  const [readBook, { error: err }] = useMutation(READ_BOOK)
 
-  let { loading, data } = useQuery(QUERY_ME, {
-    variables: { username: userProfile.data.username },
-  });
+  // create state to hold read bookId values
+  const [readBookIds, setReadBookIds] = useState(getSavedBookIds({ name: 'read_books_list' }));
 
   useEffect(() => {
-      if (data) {
-        setUserData(data.me);
-      }
-  }, [data]);
-
+    saveBookIds([], readBookIds);
+  }, [readBookIds]);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  const handleDeleteBook = async (bookId) => {
+  const handleDeleteBook = async (bookId, localStorageId) => {
+
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
       return false;
     }
-    //loading = true;
-    try {
-      data = await removeBook({
-        variables: {...{bookId: bookId} }
-      })
 
-      //setUserData(data.me);
+    try {
+
+      const removeBook = await removeSavedBook({
+        variables: { bookId, listName: 'saved' }
+      });
+
+      // When we remove the book we receive an update of the user
+      // with the book removed. In order for that change to be reflected
+      // on the screen, we have to call setUserData with the updated "user" object
+      setUserData(removeBook.data.removeBook);
+
+      if (error) {
+        throw new Error('Something went wrong!');
+      }
+
       // upon success, remove book's id from localStorage
-      removeBookId(bookId);
+      removeBookId(localStorageId, { name: 'saved_books_list' });
+
+      console.log('here')
     } catch (err) {
       console.error(err);
     }
   };
 
+  async function handleReadBook(book) {
+
+    const { bookId, authors, description, title, image, link } = book;
+    // get token
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+    if (!token) {
+      return false;
+    }
+
+    try {
+      await readBook({
+        variables: { book: { bookId, authors, description, title, image, link } }
+      });
+
+      if (err) {
+        throw new Error('Something went wrong!');
+      }
+
+      setReadBookIds([...readBookIds, bookId]);
+
+    } catch (err) {
+      console.error(err);
+    }
+
+    handleDeleteBook(book._id, bookId);
+  }
+
   // if data isn't here yet, say so
   if (loading) {
     return <h2>LOADING...</h2>;
   }
-  if (data && !userData)
-  {
+  if (data && !userData) {
+    // While we're loading we don't want to call setUserData because there's no data yet.
+    // but once data IS loaded, call setUserData... but only if userData is null.
+    // If we called setUserData every time userData changed, we'd be in an infinite loop.
+    setUserData(data.me);
     return <h2>CONFIGURING...</h2>;
-  } */
+  }
+
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
         <Container>
-          <h1>Viewing Saved Books!</h1>
+          <h1>Viewing saved books!</h1>
         </Container>
       </Jumbotron>
-    </>
-  );
-};
-/* 
-    
-      <Container>
-        <h2>
+      <div className='container'>
+        <h5 className='text-center'>
           {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
+            ? `You have ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
-        </h2>
+        </h5>
         <CardColumns>
           {userData.savedBooks.map((book) => {
             return (
@@ -81,19 +122,25 @@ const SavedBooks = () => {
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
                 <Card.Body>
                   <Card.Title>{book.title}</Card.Title>
+                  <a href={book.link} target='_blank' rel='noopener noreferrer'>Review on Google Books</a>
                   <p className='small'>Authors: {book.authors}</p>
-                  <Card.Text>{book.description}</Card.Text>
-                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
-                    Delete this Book!
+                  <p>{book.description}</p>
+                  <Button
+                    className='btn-block btn-info'
+                    onClick={() => handleReadBook(book)}>Finished Reading Book!
+                  </Button>
+                  {/* This was originally "book.bookId", but remember that bookId is the GOOGLE id... we need the database "_id" */}
+                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book._id, book.bookId)}>
+                    Remove Book From List!
                   </Button>
                 </Card.Body>
               </Card>
             );
           })}
         </CardColumns>
-      </Container>
+      </div>
     </>
   );
-}; */
+};
 
 export default SavedBooks;
