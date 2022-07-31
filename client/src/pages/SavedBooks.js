@@ -30,7 +30,7 @@ const SavedBooks = () => {
   }, [readBookIds]);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  const handleDeleteBook = async (bookId) => {
+  const handleDeleteBook = async (bookId, localStorageId) => {
 
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -39,7 +39,7 @@ const SavedBooks = () => {
     }
 
     try {
-      
+
       const removeBook = await removeSavedBook({
         variables: { bookId, listName: 'saved' }
       });
@@ -52,15 +52,19 @@ const SavedBooks = () => {
       if (error) {
         throw new Error('Something went wrong!');
       }
-      
+
       // upon success, remove book's id from localStorage
-      removeBookId(bookId, { name: 'saved_books_list' });
+      removeBookId(localStorageId, { name: 'saved_books_list' });
+
+      console.log('here')
     } catch (err) {
       console.error(err);
     }
   };
 
   async function handleReadBook(book) {
+
+    const { bookId, authors, description, title, image, link } = book;
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -68,32 +72,29 @@ const SavedBooks = () => {
       return false;
     }
 
-    console.log(book);
-
     try {
       await readBook({
-        variables: { book: { ...book } }
+        variables: { book: { bookId, authors, description, title, image, link } }
       });
 
       if (err) {
         throw new Error('Something went wrong!');
       }
 
-      setReadBookIds([...readBookIds, book.bookId]);
+      setReadBookIds([...readBookIds, bookId]);
 
     } catch (err) {
       console.error(err);
     }
 
-    handleDeleteBook(book.bookId);
+    handleDeleteBook(book._id, bookId);
   }
 
   // if data isn't here yet, say so
   if (loading) {
     return <h2>LOADING...</h2>;
   }
-  if (data && !userData)
-  {
+  if (data && !userData) {
     // While we're loading we don't want to call setUserData because there's no data yet.
     // but once data IS loaded, call setUserData... but only if userData is null.
     // If we called setUserData every time userData changed, we'd be in an infinite loop.
@@ -129,7 +130,7 @@ const SavedBooks = () => {
                     onClick={() => handleReadBook(book)}>Finished Reading Book!
                   </Button>
                   {/* This was originally "book.bookId", but remember that bookId is the GOOGLE id... we need the database "_id" */}
-                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book._id)}>
+                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book._id, book.bookId)}>
                     Remove Book From List!
                   </Button>
                 </Card.Body>

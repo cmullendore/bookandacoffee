@@ -14,14 +14,14 @@ const ReadBooks = () => {
   const { loading, data } = useQuery(QUERY_ME);
   const [removeReadBook, { error }] = useMutation(REMOVE_BOOK);
 
-  const userData = data?.me || {};
+  const [userData, setUserData] = useState();
 
   const [showReview, setShowReview] = useState(false);
 
   const [reviewBookData, setReviewBookData] = useState({});
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  const handleDeleteBook = async (bookId) => {
+  const handleDeleteBook = async (bookId, localStorageId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -29,29 +29,41 @@ const ReadBooks = () => {
     }
 
     try {
-      await removeReadBook({
+      const removeBook = await removeReadBook({
         variables: { bookId, listName: 'read' }
       });
+
+      setUserData(removeBook.data.removeBook);
 
       if (error) {
         throw new Error('Something went wrong!');
       }
 
       // upon success, remove book's id from localStorage
-      removeBookId(bookId, { name: 'read_books_list' });
+      removeBookId(localStorageId, { name: 'read_books_list' });
     } catch (err) {
       console.error(err);
     }
   };
 
   function handleWriteReview(book) {
-    setReviewBookData({ ...book });
+    const { bookId, authors, description, title, image, link } = book;
+
+    setReviewBookData({ bookId, authors, description, title, image, link });
     setShowReview(true);
   };
 
   // if data isn't here yet, say so
   if (loading) {
     return <h2>LOADING...</h2>;
+  }
+
+  if (data && !userData) {
+    // While we're loading we don't want to call setUserData because there's no data yet.
+    // but once data IS loaded, call setUserData... but only if userData is null.
+    // If we called setUserData every time userData changed, we'd be in an infinite loop.
+    setUserData(data.me);
+    return <h2>CONFIGURING...</h2>;
   }
 
   return (
@@ -63,7 +75,7 @@ const ReadBooks = () => {
       </Jumbotron>
       <div className='container'>
         <h5 className='text-center'>
-          {userData.savedBooks.length
+          {userData.readBooks.length
             ? `You have read ${userData.readBooks.length} ${userData.readBooks.length === 1 ? 'book' : 'books'}:`
             : "You haven't read any book yet!"}
         </h5>
@@ -78,7 +90,7 @@ const ReadBooks = () => {
                   <a href={book.link} target='_blank' rel='noopener noreferrer'>Review on Google Books</a>
                   <p className='small'>Authors: {book.authors}</p>
                   {/* <p>{book.description}</p> */}
-                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
+                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book._id, book.bookId)}>
                     Remove Book From List!
                   </Button>
                   <Button className='btn-block btn-info' onClick={() => handleWriteReview(book)}>
