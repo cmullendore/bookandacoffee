@@ -18,6 +18,8 @@ const SavedBooks = () => {
   // the rendered components will update.
   const [userData, setUserData] = useState();
 
+  console.log(userData);
+
   const [removeSavedBook, { error }] = useMutation(REMOVE_BOOK);
 
   const [readBook, { error: err }] = useMutation(READ_BOOK)
@@ -56,7 +58,6 @@ const SavedBooks = () => {
       // upon success, remove book's id from localStorage
       removeBookId(localStorageId, { name: 'saved_books_list' });
 
-      console.log('here')
     } catch (err) {
       console.error(err);
     }
@@ -64,7 +65,7 @@ const SavedBooks = () => {
 
   async function handleReadBook(book) {
 
-    const { bookId, authors, description, title, image, link } = book;
+    const { _id, bookId, authors, description, title, image, link } = book;
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -87,13 +88,14 @@ const SavedBooks = () => {
       console.error(err);
     }
 
-    handleDeleteBook(book._id, bookId);
+    handleDeleteBook(_id, bookId);
   }
 
   // if data isn't here yet, say so
   if (loading) {
     return <h2>LOADING...</h2>;
   }
+
   if (data && !userData) {
     // While we're loading we don't want to call setUserData because there's no data yet.
     // but once data IS loaded, call setUserData... but only if userData is null.

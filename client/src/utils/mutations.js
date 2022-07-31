@@ -32,6 +32,7 @@ export const SAVE_BOOK = gql`
       email
       bookCount
       savedBooks {
+        _id
         bookId
         authors
         description
@@ -40,12 +41,32 @@ export const SAVE_BOOK = gql`
         link
       }
       readBooks {
+        _id
         bookId
         authors
         description
         title
         image
         link
+      }
+      bookReviews {
+        _id
+        user {
+          _id
+          username
+        }
+        book {
+          _id
+          bookId
+          title
+          authors
+          description
+          image
+          link
+        }
+        title
+        content
+        createdAt
       }
     }
   }
@@ -59,6 +80,7 @@ export const READ_BOOK = gql`
       email
       bookCount
       savedBooks {
+        _id
         bookId
         authors
         description
@@ -67,12 +89,32 @@ export const READ_BOOK = gql`
         link
       }
       readBooks {
+        _id
         bookId
         authors
         description
         title
         image
         link
+      }
+      bookReviews {
+        _id
+        user {
+          _id
+          username
+        }
+        book {
+          _id
+          bookId
+          title
+          authors
+          description
+          image
+          link
+        }
+        title
+        content
+        createdAt
       }
     }
   }
@@ -105,35 +147,73 @@ mutation removeBook($bookId: String!, $listName: String!) {
           image
           link
         }
+        bookReviews {
+          _id
+          user {
+            _id
+            username
+          }
+          book {
+            _id
+            bookId
+            title
+            authors
+            description
+            image
+            link
+          }
+          title
+          content
+          createdAt
+        }
       }
   }
 `;
 
 
-// export const ADD_REVIEW = gql`
-// mutation saveBook($bookId: String!) {
-//     removeBook(
-//         bookId: $bookId
-//     ) {
-//         _id
-//         username
-//         email
-//         savedBooks {
-//           bookId
-//           title
-//           authors
-//           description
-//           image
-//           link
-//         }
-//         readBooks {
-//           bookId
-//           title
-//           authors
-//           description
-//           image
-//           link
-//         }
-//     }
-//   }
-// `
+export const ADD_REVIEW = gql`
+mutation addReview($bookId: String!, $content: String!, $title: String!) {
+    addReview(bookId: $bookId, content: $content, title: $title) {
+      _id
+      username
+      email
+      savedBooks {
+        _id
+        bookId
+        title
+        authors
+        description
+        image
+        link
+      }
+      readBooks {
+        _id
+        bookId
+        title
+        authors
+        description
+        image
+        link
+      }
+      bookReviews {
+        _id
+        user {
+          _id
+          username
+        }
+        book {
+          _id
+          bookId
+          title
+          authors
+          description
+          image
+          link
+        }
+        title
+        content
+        createdAt
+      }
+    }
+  }
+`

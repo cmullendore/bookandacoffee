@@ -6,17 +6,16 @@ const Book = require('./Book');
 const User = require('./User');
 
 const bookReviewSchema = new Schema(
-  { 
+  {
     // set readBooks to be an array of data that keeps track of already read books
     user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+      type: Schema.Types.ObjectId,
+      ref: 'User'
     },
-    book:
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Book'
-      }
+    book: {
+      type: Schema.Types.ObjectId,
+      ref: 'Book'
+    }
     ,
     title: {
       type: String,
