@@ -47,9 +47,7 @@ const ReadBooks = () => {
   };
 
   function handleWriteReview(book) {
-    const { bookId, authors, description, title, image, link } = book;
-
-    setReviewBookData({ bookId, authors, description, title, image, link });
+    setReviewBookData({ ...book });
     setShowReview(true);
   };
 
@@ -79,7 +77,7 @@ const ReadBooks = () => {
             ? `You have read ${userData.readBooks.length} ${userData.readBooks.length === 1 ? 'book' : 'books'}:`
             : "You haven't read any book yet!"}
         </h5>
-        {showReview && <ReviewForm showReview={showReview} setShowReview={setShowReview} reviewBookData={reviewBookData} />}
+        {showReview && <ReviewForm book={reviewBookData} showReview={showReview} setShowReview={setShowReview} />}
         <CardColumns>
           {userData.readBooks.map((book) => {
             return (

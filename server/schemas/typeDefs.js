@@ -19,6 +19,7 @@ input BookInput {
     bookCount: Int
     savedBooks: [Book]
     readBooks: [Book]
+    bookReviews: [BookReview]
   }
 
   type Book {
@@ -58,7 +59,7 @@ input BookInput {
     saveBook(book: BookInput!): User
     readBook(book: BookInput!): User
     removeBook(bookId: String!, listName: String!): User
-    addReview(bookId: String!, userId: String, content: String): User
+    addReview(bookId: String!, content: String!, title: String!): User
   }
 
 `;

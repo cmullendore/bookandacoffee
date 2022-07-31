@@ -7,7 +7,10 @@ const resolvers = {
     Query: {
         me: async (parent, args, context) => {
             if (context.user) {
-                const userData = await User.findOne({ _id: context.user._id }).select('-__v -password').populate('savedBooks').populate('readBooks');
+                const userData = await User.findOne({ _id: context.user._id })
+                    .select('-__v -password')
+                    .populate('savedBooks')
+                    .populate('readBooks');
                 return userData;
             }
 
@@ -108,22 +111,28 @@ const resolvers = {
             }
 
             throw new AuthenticationError('Incorrect credentials');
-        }
-    }
-    /* - The final version of this SHOULD use the context
-    addReview: async (parent, { bookId, userId, content }, context) => {
-        if (context.user) {
-            const updatedUser = await User.findByIdAndUpdate(
-                { _id: context.user._id },
-                { $pull: { savedBooks: { bookId } } },
-                { new: true }
-            );
+        },
+        addReview: async (parent, { bookId, content, title }, context) => {
+            if (context.user) {
+                const createReview = await BookReview.create({ user: context.user._id, book: bookId, content, title });
 
-            return updatedUser;
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $addToSet: { bookReviews: createReview._id } },
+                    { new: true }
+                )
+                    .select('-__v -password')
+                    .populate('savedBooks')
+                    .populate('readBooks');
+
+                return updatedUser;
+            }
+
+            throw new AuthenticationError('Please Log In or Sign Up!');
+
         }
-    
     }
-    */
+
 }
 
 
