@@ -18,6 +18,8 @@ const SavedBooks = () => {
   // the rendered components will update.
   const [userData, setUserData] = useState();
 
+  console.log(userData);
+
   const [removeSavedBook, { error }] = useMutation(REMOVE_BOOK);
 
   const [readBook, { error: err }] = useMutation(READ_BOOK)
@@ -93,6 +95,7 @@ const SavedBooks = () => {
   if (loading) {
     return <h2>LOADING...</h2>;
   }
+
   if (data && !userData) {
     // While we're loading we don't want to call setUserData because there's no data yet.
     // but once data IS loaded, call setUserData... but only if userData is null.
