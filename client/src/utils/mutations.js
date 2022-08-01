@@ -217,3 +217,13 @@ mutation addReview($bookId: String!, $content: String!, $title: String!) {
     }
   }
 `
+
+
+export const CONFIRM_EMAIL = gql`
+mutation confirmEmail($username: String!, $code: String!) {
+  confirmEmail(username: $username, code: $code) {
+      success
+      response
+    }
+  }
+`
