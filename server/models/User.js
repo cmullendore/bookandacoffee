@@ -53,7 +53,12 @@ const userSchema = new Schema(
       type: String,
       default: "https://tinyurl.com/4dzr8d73",
       required: false
-    }
+    },
+    isEmailConfirmed: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
 
   },
   // set this to use virtual below
@@ -83,6 +88,23 @@ userSchema.methods.isCorrectPassword = async function (password) {
 userSchema.virtual('bookCount').get(function () {
   return this.savedBooks.length;
 });
+
+// when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
+userSchema.virtual('emailConfirmationCode').get(async function () {
+  if (!this.isEmailConfirmed) {
+    const stringId = this._id.toString();
+    console.log(stringId);
+    const hashId = await bcrypt.hash(stringId, 10);
+    console.log(hashId);
+    return hashId;
+  }
+  return '';
+});
+
+// custom method to compare and validate password for logging in
+userSchema.methods.confirmEmail = async function (emailConfirmationCode) {
+  return bcrypt.compare(this._id.toString(), emailConfirmationCode);
+};
 
 const User = model('User', userSchema);
 

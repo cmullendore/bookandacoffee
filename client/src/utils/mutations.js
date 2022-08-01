@@ -15,11 +15,19 @@ export const LOGIN_USER = gql`
 export const ADD_USER = gql`
   mutation addUser($username: String!, $email: String!, $password: String!) {
     addUser(username: $username, email: $email, password: $password) {
-      token
-      user {
-        _id
-        username
-      }
+      username
+      email
+      isEmailConfirmed
+      emailConfirmationCode
+    }
+  }
+`;
+
+export const SEND_EMAIL_CONFIRMATION = gql`
+  mutation sendEmailConfirmation($username: String!, $email: String!, $confirmUrl: String!) {
+    sendEmailConfirmation(username: $username, email: $email, confirmUrl: $confirmUrl) {
+      success
+      message
     }
   }
 `;
@@ -214,6 +222,16 @@ mutation addReview($bookId: String!, $content: String!, $title: String!) {
         content
         createdAt
       }
+    }
+  }
+`
+
+
+export const CONFIRM_EMAIL = gql`
+mutation confirmEmail($username: String!, $code: String!) {
+  confirmEmail(username: $username, code: $code) {
+      success
+      message
     }
   }
 `

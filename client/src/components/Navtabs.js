@@ -1,28 +1,25 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
+import React from 'react';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import SignupModal from './SignupModal';
-import LoginForm from './LoginForm';
-import ReviewForm from './ReviewForm';
 import Auth from '../utils/auth';
+import EmailConfirmedModal from './EmailConfirmedModal';
 
 const Navtabs = ({ currentPage, handlePageChange }) => {
   // set modal display state
-  const [showModal, setShowModal] = React.useState(false);
+  //const [showModal, setShowModal] = React.useState(false);
   const [showSignup, setShowSignup] = React.useState(false);
-  
   return (
     <>
       <Navbar bg='dark' variant='dark' expand='lg'>
         <Container fluid>
           <Navbar.Brand>
-            Google Books Search
+            <a href="#" onClick={() => handlePageChange('Home')}>Google Books Search </a>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbar' />
           <Navbar.Collapse id='navbar'>
             <Nav className='ml-auto'>
               {/* if user is logged in show saved books and logout */}
-              {/* Temprarily removed for testing *Auth.loggedIn() ? (  */}
+              {Auth.loggedIn() ? (
               <>
                 <Nav>
                   <a
@@ -74,6 +71,9 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
                     Logout
                   </a>
                 </Nav>
+              </>
+               ) : (  
+                <>
                 <Nav>
                   <a
                     href="#"
@@ -84,10 +84,9 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
                     Signup
                   </a>
                 </Nav>
-              </>
-              {/*) : ( 
-              <Nav onClick={() => setShowModal(true)} ><a href="#" className={'nav-link'}>Login/Sign Up</a></Nav>
-            */}
+                </>
+              )
+            }
 
               
             </Nav>
@@ -95,6 +94,7 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
         </Container>
       </Navbar>
       <SignupModal showSignup={showSignup} setShowSignup={setShowSignup} />
+      <EmailConfirmedModal/>
     </>
   );
 };
