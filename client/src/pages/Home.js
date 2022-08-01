@@ -8,6 +8,7 @@ import { LOGIN_USER } from "../utils/mutations";
 import { ADD_USER } from "../utils/mutations";
 
 import Auth from "../utils/auth";
+import DisplayReview from '../components/DisplayReview';
 
 const Home = () => {
   
@@ -80,6 +81,10 @@ const Home = () => {
           <h1>Viewing Home</h1>
         </Container>
       </Jumbotron>
+
+      <Container>
+        <DisplayReview></DisplayReview>
+      </Container>
 
 
       <Form noValidate validated={validated} onSubmit={handleLoginSubmit}>
