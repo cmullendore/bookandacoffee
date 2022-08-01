@@ -12,15 +12,22 @@ import Auth from "../utils/auth";
 const Home = () => {
   
 
-  const [userFormData, setUserFormData] = useState({ email: "", password: "" });
+  const [userLoginData, setUserLoginData] = useState({ email: "", password: "" });
+  const [userSignupData, setUserSignupData] = useState({ username: "", email: "", password: "" });
+
   const [login, { loginError }] = useMutation(LOGIN_USER);
   const [addUser, { addUserError }] = useMutation(ADD_USER);
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  const handleInputChange = (event) => {
+  const handleLoginChange = (event) => {
     const { name, value } = event.target;
-    setUserFormData({ ...userFormData, [name]: value });
+    setUserLoginData({ ...userLoginData, [name]: value });
+  };
+
+  const handleSignupChange = (event) => {
+    const { name, value } = event.target;
+    setUserSignupData({ ...userSignupData, [name]: value });
   };
 
   const handleLoginSubmit = async (event) => {
@@ -34,18 +41,12 @@ const Home = () => {
     }
     try {
       const { data } = await login({
-        variables: { ...userFormData },
+        variables: { ...userLoginData },
       });
       Auth.login(data.login.token);
     } catch (err) {
       setShowAlert(true);
     }
-
-    setUserFormData({
-      username: "",
-      email: "",
-      password: "",
-    });
   };
 
   const handleSignupSubmit = async (event) => {
@@ -60,14 +61,14 @@ const Home = () => {
 
     try {
       const { data } = await addUser({
-        variables: { ...userFormData },
+        variables: { ...userSignupData },
       });
       Auth.login(data.addUser.token);
     } catch (err) {
       setShowAlert(true);
     }
 
-    setUserFormData({
+    setUserSignupData({
       username: "",
       email: "",
       password: "",
@@ -97,8 +98,8 @@ const Home = () => {
             type="text"
             placeholder="Your email"
             name="email"
-            onChange={handleInputChange}
-            value={userFormData.email}
+            onChange={handleLoginChange}
+            value={userLoginData.email}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -112,8 +113,8 @@ const Home = () => {
             type="password"
             placeholder="Your password"
             name="password"
-            onChange={handleInputChange}
-            value={userFormData.password}
+            onChange={handleLoginChange}
+            value={userLoginData.password}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -121,7 +122,7 @@ const Home = () => {
           </Form.Control.Feedback>
         </Form.Group>
         <Button
-          disabled={!(userFormData.email && userFormData.password)}
+          disabled={!(userLoginData.email && userLoginData.password)}
           type="submit"
           variant="success"
         >
@@ -148,8 +149,8 @@ const Home = () => {
             type="text"
             placeholder="Your username"
             name="username"
-            onChange={handleInputChange}
-            value={userFormData.username}
+            onChange={handleSignupChange}
+            value={userSignupData.username}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -163,8 +164,8 @@ const Home = () => {
             type="email"
             placeholder="Your email address"
             name="email"
-            onChange={handleInputChange}
-            value={userFormData.email}
+            onChange={handleSignupChange}
+            value={userSignupData.email}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -178,8 +179,8 @@ const Home = () => {
             type="password"
             placeholder="Your password"
             name="password"
-            onChange={handleInputChange}
-            value={userFormData.password}
+            onChange={handleSignupChange}
+            value={userSignupData.password}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -189,9 +190,9 @@ const Home = () => {
         <Button
           disabled={
             !(
-              userFormData.username &&
-              userFormData.email &&
-              userFormData.password
+              userSignupData.username &&
+              userSignupData.email &&
+              userSignupData.password
             )
           }
           type="submit"
