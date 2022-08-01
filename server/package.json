@@ -15,13 +15,19 @@
   "dependencies": {
     "apollo-server-express": "^2.15.0",
     "bcrypt": "^5.0.0",
+<<<<<<< HEAD
     "express": "^4.18.1",
     "faker": "^5.5.3",
+=======
+    "express": "^4.17.1",
+>>>>>>> main
     "graphql": "^15.5.0",
+    "@faker-js/faker": "^7.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.10"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.3.0",
     "nodemon": "^2.0.3"
   }
 }

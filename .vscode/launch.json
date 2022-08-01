@@ -5,6 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Attach",
+            "port": 9229,
+            "request": "attach",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+
+        {
             "type": "node",
             "request": "launch",
             "name": "Server",
@@ -32,10 +42,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/client/src/index.js",
-            "env": {
-                "NODE_OPTIONS": "--openssl-legacy-provider"
-            }
+            "program": "${workspaceFolder}/client/src/index.js"
         }
     ]
 }

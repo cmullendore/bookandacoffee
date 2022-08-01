@@ -45,22 +45,12 @@ function App() {
       switch (currentPage) {
         case 'SearchBooks':
           return <SearchBooks />
-          break;
         case 'SavedBooks':
           return <SavedBooks />
-          break;
         case 'ReadBooks':
           return <ReadBooks />
-          break;
         case 'Profile':
           return <Profile />
-          break;
-        case 'ReviewBook':
-          // This won't show up in the tabs but will be called
-          // when the "Review this book" (or whatever) button
-          // is pressed.
-          return <ReviewBook />
-          break;
       }
     //}
 
