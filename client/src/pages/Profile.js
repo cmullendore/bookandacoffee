@@ -139,24 +139,6 @@ const Profile = () => {
         <Container>
           <h1>Viewing Profile!</h1>
           <br></br>
-<<<<<<< HEAD
-          <h2>Reading Brief about Me</h2>
-          <br></br>
-          <h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-          nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-          in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-          cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
-          <h2>Books I've Read</h2>
-          <br></br>
-          <h2>Books I want to Read</h2>
-          <br></br>
-          <h2>Book Reviews</h2>
-          <br></br>
-          <h2>Favorite Book Genres</h2>
-
-=======
           <h2>Bio: asdfasdfasdf</h2>
         </Container>
         <Container>
@@ -240,7 +222,6 @@ const Profile = () => {
       </div>
     </>
           </h3>
->>>>>>> 3152c46 (Added array display to user profile)
         </Container>
       </Jumbotron>
     </>
