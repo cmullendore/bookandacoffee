@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useMutation } from "@apollo/react-hooks";
 import Modal from 'react-bootstrap/Modal';
+import { ADD_USER, SEND_EMAIL_CONFIRMATION } from "../utils/mutations";
+import url from "url";
 
-import Auth from "../utils/auth";
-import { ADD_USER } from "../utils/mutations";
 
 const SignupModal = ({showSignup, setShowSignup}) => {
+
+ 
+
   // set initial form state
   const [userFormData, setUserFormData] = useState({
     username: "",
@@ -17,8 +20,10 @@ const SignupModal = ({showSignup, setShowSignup}) => {
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
-  const [addUser, { error }] = useMutation(ADD_USER);
+  const [addUser, { addUserError }] = useMutation(ADD_USER);
+  const [sendEmailConfirmation, { sendEmailError }] = useMutation(SEND_EMAIL_CONFIRMATION);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -39,11 +44,23 @@ const SignupModal = ({showSignup, setShowSignup}) => {
       const { data } = await addUser({
         variables: { ...userFormData },
       });
-      Auth.login(data.addUser.token);
+
+      const parsedUrl = url.parse(window.location.href);
+      const confirmUrl = `${parsedUrl.protocol}//${parsedUrl.host}?user=${encodeURIComponent(data.addUser.username)}&code=${encodeURIComponent(data.addUser.emailConfirmationCode)}}`;
+
+      const sendEmailResponse = await sendEmailConfirmation({
+        variables: { ...{email: data.addUser.email, username: data.addUser.username, confirmUrl: confirmUrl} }
+      });
+      console.log(sendEmailResponse);
+      setAlertText("Success! Please follow the instructions in the email you should be receiving shortly to confirm your email address and activate your account. Remember to check junk and spam folders.");
+      setShowAlert(true);
     } catch (err) {
-      console.error(error);
+      console.error(addUserError);
+      setAlertText("Something went wrong with your signup!");
       setShowAlert(true);
     }
+
+
 
     setUserFormData({
       username: "",
@@ -92,7 +109,7 @@ const SignupModal = ({showSignup, setShowSignup}) => {
           show={showAlert}
           variant="danger"
         >
-          Something went wrong with your signup!
+          {alertText}
         </Alert>
 
         <Form.Group>

@@ -21,11 +21,6 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    emailConfirmed: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
     // set savedBooks to be an array of data that adheres to the bookSchema
     savedBooks: [
       {
@@ -58,7 +53,12 @@ const userSchema = new Schema(
       type: String,
       default: "https://tinyurl.com/4dzr8d73",
       required: false
-    }
+    },
+    isEmailConfirmed: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
 
   },
   // set this to use virtual below
@@ -91,12 +91,15 @@ userSchema.virtual('bookCount').get(function () {
 
 // when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
 userSchema.virtual('emailConfirmationCode').get(async function () {
-  return await bcrypt.hash(this._id, 10);
+  if (!this.isEmailConfirmed) {
+    return await bcrypt.hash(this._id.toString(), 10);
+  }
+  return '';
 });
 
 // custom method to compare and validate password for logging in
 userSchema.methods.confirmEmail = async function (emailConfirmationCode) {
-  return bcrypt.compare(emailConfirmationCode, this._id);
+  return bcrypt.compare(this._id.toString(), emailConfirmationCode);
 };
 
 const User = model('User', userSchema);

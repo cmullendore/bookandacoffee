@@ -16,6 +16,8 @@ input BookInput {
     _id: ID
     username: String
     email: String
+    isEmailConfirmed: Boolean
+    emailConfirmationCode: String
     bookCount: Int
     savedBooks: [Book]
     readBooks: [Book]
@@ -46,6 +48,11 @@ input BookInput {
     user: User
   }
 
+  type EmailConfirmation {
+    success: Boolean
+    message: String
+  }
+
   type Query {
     me: User 
     user: User
@@ -55,7 +62,9 @@ input BookInput {
 
   type Mutation {
     login(email: String!, password: String!): Auth
-    addUser(username: String!, email: String!, password: String!): Auth
+    addUser(username: String!, email: String!, password: String!): User
+    sendEmailConfirmation(email: String!, username: String!, confirmUrl: String!): EmailConfirmation
+    confirmEmail(username: String!, code: String!): EmailConfirmation
     saveBook(book: BookInput!): User
     readBook(book: BookInput!): User
     removeBook(bookId: String!, listName: String!): User

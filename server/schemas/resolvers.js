@@ -2,6 +2,7 @@ const { AuthenticationError } = require('apollo-server-express');
 const { User, BookReview, Book } = require('../models');
 const { create } = require('../models/Book');
 const { signToken } = require('../utils/auth');
+const sendEmailConfirmation = require("../utils/email");
 
 const resolvers = {
     Query: {
@@ -33,9 +34,14 @@ const resolvers = {
     Mutation: {
         addUser: async (parent, args) => {
             const user = await User.create(args);
-            const token = signToken(user);
-            return { token, user };
+            
+            return user;
         },
+
+        sendEmailConfirmation: async (parent, {email, username, confirmUrl}) => {
+            sendEmailConfirmation(email, username, confirmUrl)
+        },
+
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
 
@@ -49,8 +55,35 @@ const resolvers = {
                 throw new AuthenticationError('Incorrect credentials');
             }
 
+            if (!user.isEmailConfirmed) {
+                throw new AuthenticationError('Email is not confirmed');
+            }
+
             const token = signToken(user);
             return { token, user };
+        },
+        confirmEmail: async (parent, { username, code }) => {
+            const user = await User.findOne({ username });
+
+            if (!user) {
+                return { success: false, message: "Username/Token invalid"}
+            }
+
+            const valid = await user.confirmEmail(code);
+
+            if (!valid) {
+                return { success: false, message: "Username/Token invalid"}
+            }
+
+            const updatedUser = await User.findByIdAndUpdate(
+                { _id: user._id },
+                { isEmailConfirmed: true },
+                { new: true }
+            )
+
+            if (updatedUser.isEmailConfirmed) {
+                return { success: true, message: "Email confirmed"}
+            }
         },
         saveBook: async (parent, { book }, context) => {
 

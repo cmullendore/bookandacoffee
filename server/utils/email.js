@@ -1,16 +1,22 @@
 const sgMail = require('@sendgrid/mail')
+const fs = require("fs");
+const utf8 = require ('utf8');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 
-const sendEmailConfirmation = function (recipient, emailCode) {
+const sendEmailConfirmation = function (email, username, confirmUrl) {
+    console.log("building email");
     const msg = {
-        to: recipient, // Change to your recipient
-        from: 'chris@bookandacoffee.com', // Change to your verified sender
-        subject: 'Sending with SendGrid is Fun',
-        text: 'and easy to do anywhere, even with Node.js',
-        html: `<strong>Please click this link: <a href="${emailCode}">Click Here</a></strong>`,
+        to: email, // Change to your recipient
+        from: 'noreply@bookandacoffee.com', // Change to your verified sender
+        subject: 'Welcome to Book and a Coffee',
+        text: 'Your browser does not support advanced content',
+        html: getConfirmationTemplate(confirmUrl, username)
     }
+    console.log("sending email");
+    
+    
     sgMail
         .send(msg)
         .then(() => {
@@ -18,8 +24,20 @@ const sendEmailConfirmation = function (recipient, emailCode) {
         })
         .catch((error) => {
             console.error(error)
-        })
+            return {success: false, message: error}
+        });
+        
+    console.log("done sending email");
+
+    return {success: true, message: 'Email sent'}
 
 }
 
-module.exports = { sendEmailConfirmation }
+function getConfirmationTemplate (emailConfirmationCode, username) {
+
+  let html = fs.readFileSync("./utils/email_templates/confirm_email.html").toString();
+  html = html.replace("${username}", username).replace("${emailConfirmationCode}", emailConfirmationCode);
+  return html;
+}
+
+module.exports = sendEmailConfirmation 
