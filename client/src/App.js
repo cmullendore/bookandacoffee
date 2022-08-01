@@ -45,16 +45,12 @@ function App() {
       switch (currentPage) {
         case 'SearchBooks':
           return <SearchBooks />
-          break;
         case 'SavedBooks':
           return <SavedBooks />
-          break;
         case 'ReadBooks':
           return <ReadBooks />
-          break;
         case 'Profile':
           return <Profile />
-          break;
       }
     //}
 

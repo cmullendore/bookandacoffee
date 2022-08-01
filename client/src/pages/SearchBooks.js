@@ -1,33 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
-
-
-/* PREVIOUS SEARCH CODE - Modify and reuse to fit our site design
-
-import { SAVE_BOOK } from '../utils/mutations';
-import { useMutation } from '@apollo/react-hooks';
-
-
+import { Button, Card, CardColumns } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
 import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
+import { useMutation } from '@apollo/client';
+import { SAVE_BOOK, READ_BOOK } from '../utils/mutations';
 
 const SearchBooks = () => {
+  // create function for saving a book to user's book list in database
+  const [saveBook, { error }] = useMutation(SAVE_BOOK);
+
+  const [readBook, { error: err }] = useMutation(READ_BOOK);
+
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
 
-  const [addBook, { addBookError }] = useMutation(SAVE_BOOK);
+  const [searchedBookName, setSearchedBookName] = useState('');
+
   // create state to hold saved bookId values
-  const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
+  const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds({ name: 'saved_books_list' }));
+
+  // create state to hold read bookId values
+  const [readBookIds, setReadBookIds] = useState(getSavedBookIds({ name: 'read_books_list' }));
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
-  // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
   useEffect(() => {
-    return () => saveBookIds(savedBookIds);
-  });
+    saveBookIds(savedBookIds, readBookIds);
+  }, [savedBookIds, readBookIds]);
 
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
@@ -52,18 +54,22 @@ const SearchBooks = () => {
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || '',
-        link: book.volumeInfo.infoLink
+        link: book.volumeInfo.previewLink
       }));
 
       setSearchedBooks(bookData);
+      setSearchedBookName(searchInput);
       setSearchInput('');
     } catch (err) {
       console.error(err);
     }
   };
 
+
+
   // create function to handle saving a book to our database
-  const handleSaveBook = async (bookId) => {
+  const handleSaveBook = async (bookId, list) => {
+
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
@@ -74,51 +80,76 @@ const SearchBooks = () => {
       return false;
     }
 
-    try {
-      const response = await addBook({
-        variables: {...bookToSave }
-      });
+    switch (list.name) {
+      case 'save_books':
+        try {
+          await saveBook({
+            variables: { book: { ...bookToSave } }
+          });
 
-      // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
-    } catch (err) {
-      console.error(err);
+          if (error) {
+            throw new Error('Something went wrong!');
+          }
+
+          setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+
+        } catch (err) {
+          console.error(err);
+        }
+        break;
+      case 'read_books':
+        try {
+          await readBook({
+            variables: { book: { ...bookToSave } }
+          });
+
+          if (err) {
+            throw new Error('Something went wrong!');
+          }
+
+          setReadBookIds([...readBookIds, bookToSave.bookId]);
+
+        } catch (err) {
+          console.error(err);
+        }
+        break;
+      default:
+        break;
     }
   };
 
   return (
-    <>
-      <Jumbotron fluid className='text-light bg-dark'>
-        <Container>
-          <h1>Search for Books!</h1>
-          <Form onSubmit={handleFormSubmit}>
-            <Form.Row>
-              <Col xs={12} md={8}>
-                <Form.Control
-                  name='searchInput'
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  type='text'
-                  size='lg'
-                  placeholder='Search for a book'
-                />
-              </Col>
-              <Col xs={12} md={4}>
-                <Button type='submit' variant='success' size='lg'>
-                  Submit Search
-                </Button>
-              </Col>
-            </Form.Row>
-          </Form>
-        </Container>
-      </Jumbotron>
-
-      <Container>
-        <h2>
-          {searchedBooks.length
-            ? `Viewing ${searchedBooks.length} results:`
-            : 'Search for a book to begin'}
-        </h2>
+    <div className='container'>
+      <form className='search-books-form-div' onSubmit={handleFormSubmit}>
+        <div className='row'>
+          <div className='search-books-form col-12 col-md-10'>
+            <label htmlFor='searchInput'>
+              <i className='fa-solid fa-magnifying-glass fa-xl'></i>
+            </label>
+            <input
+              id='searchInput'
+              name='searchInput'
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              type='text'
+              placeholder='Search for a Book!'
+            />
+          </div>
+          <div className='col-12 col-md-2'>
+            <button className='search-form-btn' type='submit'>
+              Search
+            </button>
+          </div>
+        </div>
+      </form>
+      <section>
+        <div>
+          <h5>
+            {searchedBooks.length
+              ? `Found ${searchedBooks.length} results for ${searchedBookName}:`
+              : 'Search for a book'}
+          </h5>
+        </div>
         <CardColumns>
           {searchedBooks.map((book) => {
             return (
@@ -128,39 +159,37 @@ const SearchBooks = () => {
                 ) : null}
                 <Card.Body>
                   <Card.Title>{book.title}</Card.Title>
+                  <a href={book.link} target='_blank' rel='noopener noreferrer'>Review on Google Books</a>
                   <p className='small'>Authors: {book.authors}</p>
-                  <Card.Text>{book.description}</Card.Text>
+                  <p>{book.description}</p>
                   {Auth.loggedIn() && (
-                    <Button
-                      disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
-                      className='btn-block btn-info'
-                      onClick={() => handleSaveBook(book.bookId)}>
-                      {savedBookIds?.some((savedBookId) => savedBookId === book.bookId)
-                        ? 'This book has already been saved!'
-                        : 'Save this Book!'}
-                    </Button>
+                    <div>
+                      <Button
+                        disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
+                        className='btn-block btn-info'
+                        onClick={() => handleSaveBook(book.bookId, { name: 'save_books' })}>
+                        {savedBookIds?.some((savedBookId) => savedBookId === book.bookId)
+                          ? 'This book is already in your Saved Books List!'
+                          : 'Save!'}
+                      </Button>
+                      <Button
+                        disabled={readBookIds?.some((readBookId) => readBookId === book.bookId)}
+                        className='btn-block btn-info'
+                        onClick={() => handleSaveBook(book.bookId, { name: 'read_books' })}>
+                        {readBookIds?.some((readBookId) => readBookId === book.bookId)
+                          ? 'This book is already in your Read Books List!'
+                          : 'Already Read!'}
+                      </Button>
+                    </div>
                   )}
                 </Card.Body>
               </Card>
             );
           })}
         </CardColumns>
-      </Container>
-    </>
+      </section>
+    </div>
   );
 };
 
-*/
-
-const SearchBooks = () => { 
-  return (
-    <>
-      <Jumbotron fluid className='text-light bg-dark'>
-        <Container>
-          <h1>Viewing Search Books!</h1>
-        </Container>
-      </Jumbotron>
-    </>
-  );
-};
 export default SearchBooks;
