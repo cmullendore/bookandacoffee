@@ -22,7 +22,7 @@ const SavedBooks = () => {
 
   const [removeSavedBook, { error }] = useMutation(REMOVE_BOOK);
 
-  const [readBook, { error: err }] = useMutation(READ_BOOK)
+  const [readBook, { error: err }] = useMutation(READ_BOOK);
 
   // create state to hold read bookId values
   const [readBookIds, setReadBookIds] = useState(getSavedBookIds({ name: 'read_books_list' }));

@@ -43,7 +43,8 @@ const userSchema = new Schema(
     ],
     biography: {
       type: String,
-      required: false
+      required: false,
+      default: "You have not set up your bio yet"
     },
     favoriteSubjects: {
       type: [String],
