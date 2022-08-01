@@ -92,7 +92,11 @@ userSchema.virtual('bookCount').get(function () {
 // when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
 userSchema.virtual('emailConfirmationCode').get(async function () {
   if (!this.isEmailConfirmed) {
-    return await bcrypt.hash(this._id.toString(), 10);
+    const stringId = this._id.toString();
+    console.log(stringId);
+    const hashId = await bcrypt.hash(stringId, 10);
+    console.log(hashId);
+    return hashId;
   }
   return '';
 });

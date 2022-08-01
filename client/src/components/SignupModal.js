@@ -46,7 +46,10 @@ const SignupModal = ({showSignup, setShowSignup}) => {
       });
 
       const parsedUrl = url.parse(window.location.href);
-      const confirmUrl = `${parsedUrl.protocol}//${parsedUrl.host}?user=${encodeURIComponent(data.addUser.username)}&code=${encodeURIComponent(data.addUser.emailConfirmationCode)}}`;
+      const confirmUrl = `${parsedUrl.protocol}//${parsedUrl.host}?user=${encodeURIComponent(data.addUser.username)}&code=${encodeURIComponent(data.addUser.emailConfirmationCode)}`;
+      console.log(data.addUser.emailConfirmationCode);
+      console.log(encodeURIComponent(data.addUser.emailConfirmationCode));
+      console.log(confirmUrl);
 
       const sendEmailResponse = await sendEmailConfirmation({
         variables: { ...{email: data.addUser.email, username: data.addUser.username, confirmUrl: confirmUrl} }

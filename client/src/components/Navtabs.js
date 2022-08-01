@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import SignupModal from './SignupModal';
 import Auth from '../utils/auth';
+import EmailConfirmedModal from './EmailConfirmedModal';
 
 const Navtabs = ({ currentPage, handlePageChange }) => {
   // set modal display state
@@ -93,6 +94,7 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
         </Container>
       </Navbar>
       <SignupModal showSignup={showSignup} setShowSignup={setShowSignup} />
+      <EmailConfirmedModal/>
     </>
   );
 };
