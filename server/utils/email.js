@@ -34,8 +34,8 @@ const sendEmailConfirmation = function (email, username, confirmUrl) {
 }
 
 function getConfirmationTemplate (emailConfirmationCode, username) {
-
-  let html = fs.readFileSync("./utils/email_templates/confirm_email.html").toString();
+  
+  let html = fs.readFileSync("./server/utils/email_templates/confirm_email.html").toString();
   html = html.replace("${username}", username).replace("${emailConfirmationCode}", emailConfirmationCode);
   return html;
 }
