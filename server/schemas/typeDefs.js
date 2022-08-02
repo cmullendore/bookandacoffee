@@ -12,6 +12,10 @@ input BookInput {
   link: String
 }
 
+input BioInput {
+  biography: String
+}
+
   type User {
     _id: ID
     username: String
@@ -22,6 +26,7 @@ input BookInput {
     savedBooks: [Book]
     readBooks: [Book]
     bookReviews: [BookReview]
+    biography: String
   }
 
   type Book {
@@ -69,9 +74,8 @@ input BookInput {
     readBook(book: BookInput!): User
     removeBook(bookId: String!, listName: String!): User
     addReview(bookId: String!, content: String!, title: String!): User
-  }
-
-`;
+    addBiography(bioData: BioInput!): User
+  }`;
 
 // export the typeDefs
 module.exports = typeDefs;

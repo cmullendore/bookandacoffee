@@ -81,7 +81,7 @@ const Profile = () => {
 
       setUserData(removeBook.data.removeBook);
 
-      if (error) {
+      if (errorRemoveSave) {
         throw new Error('Something went wrong!');
       }
 
@@ -112,7 +112,7 @@ const Profile = () => {
         variables: { book: { bookId, authors, description, title, image, link } }
       });
 
-      if (error) {
+      if (errorRemoveRead) {
         throw new Error('Something went wrong!');
       }
 
