@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import auth from './utils/auth';
 
 import {
   ApolloClient,
@@ -9,10 +8,13 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-import { Home, Profile, ReadBooks, SearchBooks, SavedBooks, ReviewBook } from './pages'
+import { Home, Profile, ReadBooks, SearchBooks, SavedBooks, EmailConfirmed } from './pages'
 
 import Navtabs from './components/Navtabs';
-import { Router } from 'react-router-dom';
+import { Router, Route, useLocation } from 'react-router-dom';
+import  { createBrowserHistory}  from 'history';
+
+const customHistory = createBrowserHistory();
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -35,26 +37,24 @@ const client = new ApolloClient({
 
 function App() {
 
+  //const params = useParams({});
+  //console.log(params);
+
   const [currentPage, setCurrentPage] = useState('Home');
 
   // This method is checking to see what the value of `currentPage` is. Depending on the value of currentPage, we return the corresponding component to render.
   const renderPage = () => {
-
-    // We only ever want to navigate to these if the user is logged in
-    //if (auth.loggedIn()) {
       switch (currentPage) {
+        case 'Home':
+          return <Home />
         case 'SearchBooks':
           return <SearchBooks />
-          break;
         case 'SavedBooks':
           return <SavedBooks />
-          break;
         case 'ReadBooks':
           return <ReadBooks />
-          break;
         case 'Profile':
           return <Profile />
-          break;
       }
     //}
 
@@ -69,9 +69,13 @@ function App() {
     <ApolloProvider client={client}>
       <div>
         {/* We are passing the currentPage from state and the function to update it */}
+        
+        <Router history={customHistory}>
+        <Route exact path="/">
         <Navtabs currentPage={currentPage} handlePageChange={handlePageChange} />
-        {/* Here we are calling the renderPage method which will return a component  */}
         {renderPage()}
+        </Route>
+        </Router>
       </div>
     </ApolloProvider>
   );

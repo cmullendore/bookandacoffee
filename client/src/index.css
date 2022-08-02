@@ -1,5 +1,12 @@
+:root {
+  --paper-color: #F2F2F2;
+  --coffee-color: #73341D;
+  --latte-color: #BF9A84;
+  --mug-color: #D9CEAD;
+}
+
 body {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Gentium Book Plus', serif;
 }
 
 h1,
@@ -8,10 +15,51 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Rubik Mono One', sans-serif;
+  font-family: 'Gentium Book Plus', serif;
+  font-weight: bold;
 }
 
 .small {
   font-weight: 300;
   font-style: italic;
+}
+
+.search-books-form-div {
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+
+}
+
+.search-books-form {
+  margin: 10px 0;
+}
+
+.search-books-form label {
+  margin: 10px;
+}
+
+.search-books-form input {
+  padding: 8px;
+  font-size: 18px;
+  border-radius: 5px;
+  font-weight: bold;
+  width: 85%;
+}
+
+.search-form-btn {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  font-weight: bold;
+  background-color: aliceblue;
+}
+.card {
+  background-color: var(--paper-color);
+}
+.card-header {
+  background-color: var(--coffee-color);
+  color: var(--paper-color);
 }
