@@ -181,10 +181,16 @@ const resolvers = {
 
             throw new AuthenticationError('Please Log In or Sign Up!');
 
+        },
+        addBiography: async (parent, { bioData }, context) => {
+            if(context.user) {
+                const updateUserBio = User.findOneAndUpdate({_id: context.user._id}, {$set: {biography: bioData}},{new: true});
+                return updateUserBio;
+            }
+            throw new AuthenticationError('Please add a bio for your profile.');
         }
     }
-
-}
+};
 
 
 module.exports = resolvers;

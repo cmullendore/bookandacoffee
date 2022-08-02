@@ -106,3 +106,5 @@ server/package-lock.json
 server/sendgrid.env
 client/package-lock.json
 client/package-lock.json
+
+.DS_Store
