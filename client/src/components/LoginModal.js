@@ -29,6 +29,7 @@ const LoginModal = ({showLogin, setShowLogin}) => {
     event.preventDefault();
 
     // check if form has everything (as per react-bootstrap docs)
+
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -53,7 +54,7 @@ const LoginModal = ({showLogin, setShowLogin}) => {
     }
 
     setUserFormData({
-      // username: '',
+      
       email: '',
       password: '',
     });

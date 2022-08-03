@@ -100,7 +100,6 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
               )
             }
 
-              
             </Nav>
           </Navbar.Collapse>
         </Container>
