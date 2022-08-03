@@ -3,14 +3,20 @@ import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 
+import Modal from 'react-bootstrap/Modal';
+
 // import { loginUser } from '../utils/API';
 import Auth from '../utils/auth';
 import { LOGIN_USER } from '../utils/mutations';
 
-const LoginForm = () => {
+const LoginModal = ({showLogin, setShowLogin}) => {
+
   const [loginUser, { error }] = useMutation(LOGIN_USER);
 
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
+
+  // const SignupModal = ({showSignup, setShowSignup}) => {
+
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
@@ -23,6 +29,7 @@ const LoginForm = () => {
     event.preventDefault();
 
     // check if form has everything (as per react-bootstrap docs)
+
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -38,7 +45,7 @@ const LoginForm = () => {
         throw new Error('Something went wrong!');
       }
 
-      const { token, user } = data.loginUser;
+      const { token, user } = data.login;
       console.log(user);
       Auth.login(token);
     } catch (err) {
@@ -47,7 +54,7 @@ const LoginForm = () => {
     }
 
     setUserFormData({
-      username: '',
+      
       email: '',
       password: '',
     });
@@ -55,7 +62,33 @@ const LoginForm = () => {
 
   return (
     <>
-      <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
+    {/* This is needed for the validation functionality above */}
+
+
+
+    <Modal
+      size='lg'
+      show={showLogin}
+      onHide={() => setShowLogin(false)}
+      aria-labelledby='login-modal'>
+      {/* tab container to do login component */}
+
+      <div role="dialog" aria-modal="true" aria-labelledby="login-modal" className="fade modal show" tabIndex="-1"
+        style={{ display: 'block' }}>
+        <div role="document" className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <div className="modal-header">
+                <h2>Login</h2>
+              <button type="button" className="close" onClick={() => setShowLogin(false)}><span aria-hidden="true">×</span><span
+              className="sr-only">Close</span>
+              </button>
+            </div>
+            
+            <div className="modal-body">
+
+
+
+            <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
           Something went wrong with your login credentials!
         </Alert>
@@ -69,7 +102,7 @@ const LoginForm = () => {
             value={userFormData.email}
             required
           />
-          <Form.Control.Feedback type='invalid'>Email is required!</Form.Control.Feedback>
+          <Form.Control.Feedback type='invalid'>Your Email is required!</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group>
@@ -82,7 +115,7 @@ const LoginForm = () => {
             value={userFormData.password}
             required
           />
-          <Form.Control.Feedback type='invalid'>Password is required!</Form.Control.Feedback>
+          <Form.Control.Feedback type='invalid'>A Password is required!</Form.Control.Feedback>
         </Form.Group>
         <Button
           disabled={!(userFormData.email && userFormData.password)}
@@ -91,8 +124,19 @@ const LoginForm = () => {
           Submit
         </Button>
       </Form>
+
+
+
+      </div>
+            </div>
+
+          </div>
+        </div>
+      </Modal>
+
+
     </>
   );
 };
 
-export default LoginForm;
+export default LoginModal;

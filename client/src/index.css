@@ -11,6 +11,10 @@ h6 {
   font-family: 'Rubik Mono One', sans-serif;
 }
 
+.navbar {
+  font-family: Cinzel;
+}
+
 .small {
   font-weight: 300;
   font-style: italic;

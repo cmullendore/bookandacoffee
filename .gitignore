@@ -102,9 +102,8 @@ dist
 
 # TernJS port file
 .tern-port
-server/package-lock.json
-server/sendgrid.env
-client/package-lock.json
-client/package-lock.json
 
+package-lock.json
 .DS_Store
+.vscode
+build/
