@@ -188,11 +188,13 @@ const resolvers = {
             }
             throw new AuthenticationError('Please add a bio for your profile.');
         },
-        getReviews: async (parent, { skip = 0, limit = 10 }) => {
+        getReviews: async (parent, { skip = 0, take = 10 }) => {
             const reviews = await BookReview.find({})
+                .populate('user')
+                .populate('book')
                 .sort({ createdOn: -1 })
                 .skip(skip)
-                .limit(limit);
+                .limit(take);
             return reviews;
         },
     }
