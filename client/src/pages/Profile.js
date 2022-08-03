@@ -137,9 +137,18 @@ const Profile = () => {
     <>
       <Jumbotron fluid className='text-light bg-dark'>
         <Container>
-          <h1>Viewing Profile!</h1>
+          {/*<h1>Viewing Profile!</h1>*/}
           <br></br>
-          <h2>Bio: asdfasdfasdf</h2>
+          <h3>About me: </h3>
+          <br></br>
+          <h4>I have loved reading since I was a child. 
+            While I have only recently started to experience the same love for coffee,
+            I'm doing my best to match its indulgence with my comsumption of books.
+            <br></br>
+            My favorite genres include historical fiction, (auto)biographies, sci-fi,
+            fantasy, and coming of age novels.</h4>
+            <br></br>
+            <br></br>
         </Container>
         <Container>
           <h3>My Saved Books:
@@ -164,7 +173,7 @@ const Profile = () => {
                   <Card.Title>{book.title}</Card.Title>
                   <a href={book.link} target='_blank' rel='noopener noreferrer'>Review on Google Books</a>
                   <p className='small'>Authors: {book.authors}</p>
-                  <p>{book.description}</p>
+                  {/*<p>{book.description}</p>*/}
                   <Button
                     className='btn-block btn-info'
                     onClick={() => handleReadBook(book)}>Finished Reading Book!
