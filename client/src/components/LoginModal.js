@@ -45,7 +45,7 @@ const LoginModal = ({showLogin, setShowLogin}) => {
         throw new Error('Something went wrong!');
       }
 
-      const { token, user } = data.loginUser;
+      const { token, user } = data.login;
       console.log(user);
       Auth.login(token);
     } catch (err) {
