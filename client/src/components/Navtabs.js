@@ -15,7 +15,17 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
       <Navbar bg='dark' variant='dark' expand='lg'>
         <Container fluid>
           <Navbar.Brand>
-            <a href="#" onClick={() => handlePageChange('Home')}>Google Books Search </a>
+          <a href="#" onClick={() => handlePageChange('Home')} className='nav-link'>
+            <div className='navbar-nav'>
+              <div className='d-flex align-items-center'>
+                <img src="/book-coffee.svg" style={{hight: 100 + 'px'},{width: 100 + 'px'}} />
+                <div>
+                Book<br/>and a<br />Coffee
+              </div>
+              </div>
+            </div>
+            </a>
+            
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbar' />
           <Navbar.Collapse id='navbar'>
