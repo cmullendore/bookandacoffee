@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import SignupModal from './SignupModal';
+import LoginModal from './LoginModal';
 import Auth from '../utils/auth';
 import EmailConfirmedModal from './EmailConfirmedModal';
 
@@ -8,6 +9,7 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
   // set modal display state
   //const [showModal, setShowModal] = React.useState(false);
   const [showSignup, setShowSignup] = React.useState(false);
+  const [showLogin, setShowLogin] = React.useState(false);
   return (
     <>
       <Navbar bg='dark' variant='dark' expand='lg'>
@@ -84,16 +86,26 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
                     Signup
                   </a>
                 </Nav>
+                <Nav>
+                  <a
+                    href="#"
+                    onClick={() => setShowLogin(true)}
+                    // Check to see if the currentPage is `About`, and if so we use the active link class from bootstrap. Otherwise, we set it to a normal nav-link
+                    className={'nav-link'}
+                  >
+                    Login
+                  </a>
+                </Nav>
                 </>
               )
             }
 
-              
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
       <SignupModal showSignup={showSignup} setShowSignup={setShowSignup} />
+      <LoginModal showLogin={showLogin} setShowLogin={setShowLogin} />
       <EmailConfirmedModal/>
     </>
   );
