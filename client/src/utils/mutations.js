@@ -235,3 +235,25 @@ mutation confirmEmail($username: String!, $code: String!) {
     }
   }
 `
+
+
+export const GET_REVIEWS = gql`
+mutation getReviews($skip: Int, $take: Int) {
+  getReviews(skip: $skip, take: $take) {
+    user {
+      _id
+      username
+    }
+    book {
+      bookId
+      authors
+      title
+      image
+      link
+    }
+    title
+    content
+    createdAt
+  }
+  }
+`

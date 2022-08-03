@@ -4,7 +4,7 @@ import { Jumbotron, Container, Form, Alert, Button } from 'react-bootstrap';
 import { useMutation } from "@apollo/react-hooks";
 
 // import { loginUser } from '../utils/API';
-import { LOGIN_USER } from "../utils/mutations";
+import { LOGIN_USER, GET_REVIEWS } from "../utils/mutations";
 import { ADD_USER } from "../utils/mutations";
 
 import Auth from "../utils/auth";
@@ -17,7 +17,10 @@ const Home = () => {
   const [userSignupData, setUserSignupData] = useState({ username: "", email: "", password: "" });
 
   const [login, { loginError }] = useMutation(LOGIN_USER);
+  
+  const [getReviews, { getReviewsError }] = useMutation(GET_REVIEWS);
   const [addUser, { addUserError }] = useMutation(ADD_USER);
+
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 

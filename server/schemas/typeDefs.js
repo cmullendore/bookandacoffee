@@ -75,6 +75,7 @@ input BioInput {
     removeBook(bookId: String!, listName: String!): User
     addReview(bookId: String!, content: String!, title: String!): User
     addBiography(bioData: BioInput!): User
+    getReviews(skip: Int, take: Int): [BookReview]
   }`;
 
 // export the typeDefs

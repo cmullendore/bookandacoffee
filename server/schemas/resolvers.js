@@ -41,7 +41,6 @@ const resolvers = {
         sendEmailConfirmation: async (parent, {email, username, confirmUrl}) => {
             sendEmailConfirmation(email, username, confirmUrl)
         },
-
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
 
@@ -188,7 +187,14 @@ const resolvers = {
                 return updateUserBio;
             }
             throw new AuthenticationError('Please add a bio for your profile.');
-        }
+        },
+        getReviews: async (parent, { skip = 0, limit = 10 }) => {
+            const reviews = await BookReview.find({})
+                .sort({ createdOn: -1 })
+                .skip(skip)
+                .limit(limit);
+            return reviews;
+        },
     }
 };
 
