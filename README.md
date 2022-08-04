@@ -1,9 +1,8 @@
-# Yakety [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
+# Book and a Coffee [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
 
-Yakety is a full-stack web application that allows users to create chat rooms with other register users, while first loggin or signing up to Yakety. 
+Book and a Coffee is a full-stack web application that utilizes the MERN technologies to function. In Book and a Coffee, a register user is able to search up a book by it's names/genre, and add it to their saved or read books list. Futhermore, a register user can view other users books reviews and write book reviews themselves. 
 
 #### Built With
 * HTML
@@ -25,11 +24,30 @@ Yakety is a full-stack web application that allows users to create chat rooms wi
  
 ## Usage
 
- As an web application Yakety must be used through a web browser and visiting https://yakety-chat.herokuapp.com/ .
+ As an web application Yakety must be used through a web browser and visiting https://www.bookandacoffee.com/ .
 
 ## License
 
-https://github.com/cmullendore/yakety/blob/main/LICENSE
+    Copyright (c) [2022] [Alex Vazquez, Chris Mullendore, Michael M, Nick Morihisa & Devin Garcia]
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+    
 
 ## Contributing
 
@@ -48,9 +66,9 @@ If you require any further information / assistance, please feel free to contact
 * [Alex GitHub Profile](https://github.com/avazque008)
 * [Michael GitHub Profile](https://github.com/michaelmikelic)
 * [Chris GitHub Profile](https://github.com/cmullendore)
-* [Jason GitHub Profile](https://github.com/gummygom)
+* [Nick GitHub Profile](https://github.com/)
 
 ## Web Application Deployemnt URL
 
-https://yakety-chat.herokuapp.com/
+https://www.bookandacoffee.com/
 
