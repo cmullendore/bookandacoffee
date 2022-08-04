@@ -66,7 +66,8 @@ If you require any further information / assistance, please feel free to contact
 * [Alex GitHub Profile](https://github.com/avazque008)
 * [Michael GitHub Profile](https://github.com/michaelmikelic)
 * [Chris GitHub Profile](https://github.com/cmullendore)
-* [Nick GitHub Profile](https://github.com/)
+* Nick Morihisa
+* Devin Garcia
 
 ## Web Application Deployemnt URL
 
