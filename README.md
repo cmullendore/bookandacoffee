@@ -28,7 +28,7 @@ Book and a Coffee is a full-stack web application that utilizes the MERN technol
  
 ## Usage
 
- As an web application Yakety must be used through a web browser and visiting https://www.bookandacoffee.com/ .
+ As an web application Book and a Coffee must be used through a web browser and visiting https://www.bookandacoffee.com/ .
 
 ## License
 
