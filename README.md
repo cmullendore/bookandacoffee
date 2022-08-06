@@ -6,7 +6,7 @@ Book and a Coffee is a full-stack web application that utilizes the MERN technol
 
 ## Preview
 
-![Website](https://user-images.githubusercontent.com/97632228/182742646-5811f53a-133a-4eab-b30a-769645be0ec9.png)
+![Website](./client/src/assets/images/bookandacoffee.png)
 
 #### Built With
 * HTML
