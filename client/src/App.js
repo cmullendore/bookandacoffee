@@ -8,10 +8,10 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-import { Home, Profile, ReadBooks, SearchBooks, SavedBooks, EmailConfirmed } from './pages'
+import { Home, Profile, ReadBooks, SearchBooks, SavedBooks } from './pages'
 
 import Navtabs from './components/Navtabs';
-import { Router, Route, useLocation } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import  { createBrowserHistory}  from 'history';
 
 const customHistory = createBrowserHistory();
@@ -36,10 +36,6 @@ const client = new ApolloClient({
 });
 
 function App() {
-
-  //const params = useParams({});
-  //console.log(params);
-
   const [currentPage, setCurrentPage] = useState('Home');
 
   // This method is checking to see what the value of `currentPage` is. Depending on the value of currentPage, we return the corresponding component to render.
@@ -55,10 +51,9 @@ function App() {
           return <ReadBooks />
         case 'Profile':
           return <Profile />
+        default:
+          return <Home />
       }
-    //}
-
-    return <Home />;
   };
 
   const handlePageChange = (page) => setCurrentPage(page);

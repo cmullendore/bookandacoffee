@@ -36,7 +36,7 @@ const ReviewForm = ({ book, showReview, setShowReview }) => {
     }
 
     try {
-      const { data } = await addReview({
+      await addReview({
         variables: { bookId: book._id, ...reviewData },
       });
       setNotificationText('Your review was saved successfully');
@@ -82,7 +82,7 @@ const ReviewForm = ({ book, showReview, setShowReview }) => {
                   <Alert
                     dismissible
                     onClose={() => setNotificationText('')}
-                    show={(notificationText != '')}
+                    show={(notificationText !== '')}
                     variant="success"
                   >
                     {notificationText}

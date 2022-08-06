@@ -18,7 +18,7 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
           <a href="#" onClick={() => handlePageChange('Home')} className='nav-link'>
             <div className='navbar-nav'>
               <div className='d-flex align-items-center'>
-                <img src="/book-coffee.svg" style={{hight: 100 + 'px'},{width: 100 + 'px'}} />
+                <img src="/book-coffee.svg" style={{hight: 100 + 'px'},{width: 100 + 'px'}} alt="Site logo" />
                 <div>
                 Book<br/>and a<br />Coffee
               </div>
@@ -35,7 +35,7 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
               <>
                 <Nav>
                   <a
-                    href="#searchbooks"
+                    href="#"
                     onClick={() => handlePageChange('SearchBooks')}
                     // Check to see if the currentPage is `About`, and if so we use the active link class from bootstrap. Otherwise, we set it to a normal nav-link
                     className={currentPage === 'SearchBooks' ? 'nav-link active' : 'nav-link'}
@@ -45,7 +45,7 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
                 </Nav>
                 <Nav>
                   <a
-                    href="#savedbooks"
+                    href="#"
                     onClick={() => handlePageChange('SavedBooks')}
                     // Check to see if the currentPage is `About`, and if so we use the active link class from bootstrap. Otherwise, we set it to a normal nav-link
                     className={currentPage === 'SavedBooks' ? 'nav-link active' : 'nav-link'}
@@ -55,7 +55,7 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
                 </Nav>
                 <Nav>
                   <a
-                    href="#readbooks"
+                    href="#"
                     onClick={() => handlePageChange('ReadBooks')}
                     // Check to see if the currentPage is `About`, and if so we use the active link class from bootstrap. Otherwise, we set it to a normal nav-link
                     className={currentPage === 'ReadBooks' ? 'nav-link active' : 'nav-link'}
@@ -65,7 +65,7 @@ const Navtabs = ({ currentPage, handlePageChange }) => {
                 </Nav>
                 <Nav>
                   <a
-                    href="#profile"
+                    href="#"
                     onClick={() => handlePageChange('Profile')}
                     // Check to see if the currentPage is `About`, and if so we use the active link class from bootstrap. Otherwise, we set it to a normal nav-link
                     className={currentPage === 'Profile' ? 'nav-link active' : 'nav-link'}

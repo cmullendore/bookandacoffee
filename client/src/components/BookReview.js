@@ -1,10 +1,6 @@
 import React from 'react';
 import { Card, Container, Row, Col } from 'react-bootstrap';
 
-import Auth from '../utils/auth';
-
-import { QUERY_BOOKREVIEWS } from '../utils/queries';
-
 const BookReview = ({ review }) => {
 
     return (

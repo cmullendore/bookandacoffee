@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Jumbotron, Container, Button } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 
 import { useQuery } from '@apollo/client';
 import { QUERY_BOOKREVIEWS, QUERY_BOOKREVIEWSCOUNT } from '../utils/queries';
@@ -26,7 +26,7 @@ useEffect(() => {
     
     setReviews(reviewsQuery.data.bookReviews);
   }
-}, [reviewsQuery.data]);
+}, [reviewsQuery.loading, reviewsQuery.data]);
 
 useEffect(() => {
 
@@ -35,7 +35,7 @@ useEffect(() => {
     setReviewsCount(reviewsCountQuery.data.bookReviewsCount);
 
   }
-}, [reviewsCountQuery.loading]);
+}, [reviewsCountQuery.loading, reviewsCountQuery.data]);
 
 
 if (reviewsQuery.loading) {
