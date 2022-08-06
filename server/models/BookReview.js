@@ -39,6 +39,7 @@ const bookReviewSchema = new Schema(
   }
 );
 
+
 const BookReview = model('BookReview', bookReviewSchema);
 
 module.exports = BookReview;

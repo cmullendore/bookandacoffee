@@ -46,3 +46,28 @@ export const QUERY_ME = gql`
   }
 }
 `;
+export const QUERY_BOOKREVIEWS = gql`
+
+  query BookReviews($skip: Int, $limit: Int) {
+    bookReviews(skip: $skip, limit: $limit) {
+      _id
+      title
+      content
+      user {
+        _id
+        username
+      }
+      book {
+        image
+        link
+        title
+      }
+    }
+  }
+`;
+
+export const QUERY_BOOKREVIEWSCOUNT = gql`
+  query {
+    bookReviewsCount
+  }
+`;

@@ -18,12 +18,18 @@ const resolvers = {
 
             throw new AuthenticationError('Not logged in');
         },
-        bookReviews: async (parent, { skip = 0, limit = 10 }) => {
+        bookReviews: async (parent, { skip = 0, limit = 2 }) => {
             const reviews = await BookReview.find({})
+                .populate('user')
+                .populate('book')
                 .sort({ createdOn: -1 })
                 .skip(skip)
                 .limit(limit);
             return reviews;
+        },
+        bookReviewsCount: async (parent, {}) => {
+            const reviewsCount = await BookReview.count();
+            return reviewsCount;
         },
         users: async (parent, args) => {
             const reviews = await User.find();

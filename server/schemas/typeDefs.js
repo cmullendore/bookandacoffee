@@ -62,7 +62,8 @@ input BioInput {
     me: User 
     user: User
     users: [User]
-    bookReviews: [BookReview]
+    bookReviews(skip: Int, limit: Int): [BookReview]
+    bookReviewsCount: Int
   }
 
   type Mutation {
