@@ -28,7 +28,7 @@ const resolvers = {
             return reviews;
         },
         bookReviewsCount: async (parent, {}) => {
-            const reviewsCount = await BookReview.count();
+            const reviewsCount = await BookReview.countDocuments();
             return reviewsCount;
         },
         users: async (parent, args) => {

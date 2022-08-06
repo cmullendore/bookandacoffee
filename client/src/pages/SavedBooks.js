@@ -18,8 +18,6 @@ const SavedBooks = () => {
   // the rendered components will update.
   const [userData, setUserData] = useState();
 
-  console.log(userData);
-
   const [removeSavedBook, { error }] = useMutation(REMOVE_BOOK);
 
   const [readBook, { error: err }] = useMutation(READ_BOOK)

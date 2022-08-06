@@ -6,7 +6,7 @@ const { Book, User } = require('../models');
 db.once('open', async () => {
   await User.deleteMany({});
   await Book.deleteMany({});
-    console.log("deleted");
+
     const userData = [];
 
     for (let i = 0; i < 50; i += 1) {
@@ -18,7 +18,6 @@ db.once('open', async () => {
       }
 
     const createdUsers = await User.collection.insertMany(userData);
-console.log(createdUsers);
 
     const bookData = [];
 
@@ -32,7 +31,6 @@ console.log(createdUsers);
       }
 
     const createdBooks = await Book.collection.insertMany(bookData);
-console.log(createdBooks);
 }
 )
 

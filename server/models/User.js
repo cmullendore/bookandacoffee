@@ -93,9 +93,9 @@ userSchema.virtual('bookCount').get(function () {
 userSchema.virtual('emailConfirmationCode').get(async function () {
   if (!this.isEmailConfirmed) {
     const stringId = this._id.toString();
-    console.log(stringId);
+
     const hashId = await bcrypt.hash(stringId, 10);
-    console.log(hashId);
+
     return hashId;
   }
   return '';

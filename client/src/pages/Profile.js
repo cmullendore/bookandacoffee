@@ -26,7 +26,7 @@ const Profile = () => {
   const [removeSavedBook, { errorRemoveSave }] = useMutation(REMOVE_BOOK);
   const [removeReadBook, { errorRemoveRead }] = useMutation(REMOVE_BOOK);
 
-  const [readBook, { errorRead: err }] = useMutation(READ_BOOK);
+  const [readBook] = useMutation(READ_BOOK);
   
   const userProfile = Auth.getProfile();
 

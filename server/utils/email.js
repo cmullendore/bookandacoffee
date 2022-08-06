@@ -6,7 +6,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 
 const sendEmailConfirmation = function (email, username, confirmUrl) {
-    console.log("building email");
+
     const msg = {
         to: email, // Change to your recipient
         from: 'noreply@bookandacoffee.com', // Change to your verified sender
@@ -14,21 +14,16 @@ const sendEmailConfirmation = function (email, username, confirmUrl) {
         text: 'Your browser does not support advanced content',
         html: getConfirmationTemplate(confirmUrl, username)
     }
-    console.log("sending email");
+
     
     
     sgMail
         .send(msg)
-        .then(() => {
-            console.log('Email sent')
-        })
         .catch((error) => {
             console.error(error)
             return {success: false, message: error}
         });
         
-    console.log("done sending email");
-
     return {success: true, message: 'Email sent'}
 
 }

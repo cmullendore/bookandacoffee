@@ -28,7 +28,7 @@ const consoleLogger = (req, res, next) => {
   let url = req.url;
   let status = res.statusCode;
   let log = `${method}:${url} ${status}`;
-  console.log(log);
+
   next();
 };
 app.use(consoleLogger);
